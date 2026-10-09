@@ -43,18 +43,64 @@
       </div>
     </section>
 
+    <section class="seo-content" aria-labelledby="help-heading">
+      <div class="section-intro">
+        <p class="eyebrow">QUICK ANSWERS</p>
+        <h2 id="help-heading">Currency conversion,<br>made clear.</h2>
+        <p>Use k4currency to check common exchange pairs with live mid-market rates before you travel, shop, or plan an international payment.</p>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>How does the currency converter work?</summary>
+          <p>Enter an amount, choose the currency you have, and choose the currency you need. k4currency uses live rates from a public foreign-exchange data provider and updates the result when you change the source currency.</p>
+        </details>
+        <details>
+          <summary>What is a mid-market exchange rate?</summary>
+          <p>The mid-market rate is the midpoint between the buy and sell prices in global currency markets. Banks and payment providers may add their own margin or fees.</p>
+        </details>
+        <details>
+          <summary>Which currencies can I convert?</summary>
+          <p>The converter includes USD, EUR, GBP, CAD, AUD, JPY, CNY, INR, and CHF. Select a source and target currency to see the current conversion rate.</p>
+        </details>
+      </div>
+    </section>
+
   </main>
   <footer class="shell"><span class="brand"><span class="brand-mark">k4</span><span>currency</span></span><span>Rates without borders.</span></footer>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "k4currency",
-    "url": "https://k4currency.com/",
-    "description": "Currency converter with live exchange rates.",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "k4currency",
+        "url": "https://k4currency.com/",
+        "description": "Currency converter with live exchange rates.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does the currency converter work?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Enter an amount, choose the currency you have, and choose the currency you need. k4currency uses live exchange rates to update the result." }
+          },
+          {
+            "@type": "Question",
+            "name": "What is a mid-market exchange rate?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The mid-market rate is the midpoint between the buy and sell prices in global currency markets." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which currencies can I convert?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The converter includes USD, EUR, GBP, CAD, AUD, JPY, CNY, INR, and CHF." }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <script src="/app.js"></script>
