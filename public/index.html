@@ -24,7 +24,6 @@
 <body>
   <header class="nav shell">
     <a class="brand" href="#"><span class="brand-mark">k4</span><span>currency</span></a>
-    <nav aria-label="Main navigation"><a href="#convert">Convert</a></nav>
   </header>
 
   <main class="shell">
@@ -41,7 +40,6 @@
         <div class="money-row"><label for="convertAmount">You send<input id="convertAmount" type="number" value="1000" min="0" step="0.01"></label><select id="convertFrom" aria-label="Currency to convert from"></select></div>
         <div class="swap-line"><span>1 <b id="fromCode">USD</b> = <b id="rate">—</b> <b id="toCode">EUR</b></span><button id="swap" aria-label="Swap currencies">⇅</button></div>
         <div class="money-row"><label for="convertResult">You receive<input id="convertResult" readonly></label><select id="convertTo" aria-label="Currency to convert to"></select></div>
-        <div class="fee-line"><span>k4currency fee estimate</span><span id="fee">$4.00</span></div>
       </div>
     </section>
 

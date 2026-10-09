@@ -29,7 +29,6 @@ function updateConverter() {
   $("rate").textContent = (rates[to] || 0).toFixed(4);
   $("fromCode").textContent = from;
   $("toCode").textContent = to;
-  $("fee").textContent = `${from} ${(Number($("convertAmount").value || 0) * 0.004).toFixed(2)}`;
 }
 
 async function loadRates(base) {
