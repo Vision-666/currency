@@ -87,4 +87,4 @@ const server = http.createServer(async (req, res) => {
   sendJson(res, 404, { error: "Not found" });
 });
 
-server.listen(port, () => console.log(`FlowPay is running at http://localhost:${port}`));
+server.listen(port, () => console.log(`k4currency is running at http://localhost:${port}`));

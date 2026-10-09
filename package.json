@@ -1,8 +1,8 @@
 {
-  "name": "flowpay-currency-transfer",
+  "name": "k4currency",
   "version": "1.0.0",
   "private": true,
-  "description": "Simple currency converter and money transfer demo",
+  "description": "Live currency conversion website",
   "scripts": {
     "start": "node server.js"
   }

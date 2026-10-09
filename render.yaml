@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: k4currency
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    domains:
+      - k4currency.com
+      - www.k4currency.com
