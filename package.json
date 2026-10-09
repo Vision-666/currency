@@ -1,0 +1,9 @@
+{
+  "name": "flowpay-currency-transfer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple currency converter and money transfer demo",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

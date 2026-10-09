@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>k4currency — Live currency conversion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="nav shell">
+    <a class="brand" href="#"><span class="brand-mark">k4</span><span>currency</span></a>
+    <nav><a href="#convert">Convert</a></nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div><p class="eyebrow">GLOBAL MONEY, MADE SIMPLE</p><h1>Understand money<br><em>without friction.</em></h1><p class="hero-copy">Clear, live exchange rates for wherever your money needs to go.</p><a class="button primary" href="#convert">Convert currency <span>→</span></a></div>
+    </section>
+
+    <section class="stats">    <div><strong>30+</strong><span>currencies supported</span></div><div><strong>Live</strong><span>mid-market rates</span></div><div><strong>24/7</strong><span>rate availability</span></div></section>
+
+    <section id="convert" class="section-grid">
+      <div class="section-intro"><p class="eyebrow">01 / CONVERT</p><h2>Know what<br>you’ll get.</h2><p>See the real-time mid-market estimate before you send. No surprises, no hidden math.</p></div>
+      <div class="card converter-card">
+        <div class="card-top"><h3>Currency converter</h3><span class="live"><i></i> Live rates</span></div>
+        <div class="money-row"><label>You send<input id="convertAmount" type="number" value="1000" min="0" step="0.01"></label><select id="convertFrom"></select></div>
+        <div class="swap-line"><span>1 <b id="fromCode">USD</b> = <b id="rate">—</b> <b id="toCode">EUR</b></span><button id="swap" aria-label="Swap currencies">⇅</button></div>
+        <div class="money-row"><label>Recipient gets<input id="convertResult" readonly></label><select id="convertTo"></select></div>
+        <div class="fee-line"><span>k4currency fee estimate</span><span id="fee">$4.00</span></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="shell"><span class="brand"><span class="brand-mark">k4</span><span>currency</span></span><span>Rates without borders.</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>
