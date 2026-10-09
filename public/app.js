@@ -7,6 +7,9 @@ const countryCurrencies = {
 let rates = {};
 let ratesUpdatedAt = "";
 const $ = id => document.getElementById(id);
+const track = (name, params = {}) => {
+  if (typeof window.gtag === "function") window.gtag("event", name, params);
+};
 
 function fillSelect(select, selected) {
   select.innerHTML = currencies.map(code => `<option ${code === selected ? "selected" : ""}>${code}</option>`).join("");
@@ -29,6 +32,7 @@ function updateConverter() {
   $("rate").textContent = (rates[to] || 0).toFixed(4);
   $("fromCode").textContent = from;
   $("toCode").textContent = to;
+  track("converter_updated", { from_currency: from, to_currency: to });
 }
 
 async function loadRates(base) {
@@ -54,6 +58,7 @@ async function init() {
 });
 ["convertFrom"].forEach(id => {
   $(id).addEventListener("change", async event => {
+    track("source_currency_changed", { currency: event.target.value });
     try {
       await loadRates(event.target.value);
     } catch (error) {
@@ -65,6 +70,15 @@ $("swap").addEventListener("click", () => {
   const old = $("convertFrom").value;
   $("convertFrom").value = $("convertTo").value;
   $("convertTo").value = old;
+  track("currency_swap", { from_currency: $("convertFrom").value, to_currency: $("convertTo").value });
   loadRates($("convertFrom").value).catch(error => console.error(error));
+});
+$("convertAmount").addEventListener("change", () => {
+  track("amount_changed", { currency: $("convertFrom").value });
+});
+document.querySelectorAll("details").forEach(item => {
+  item.addEventListener("toggle", () => {
+    if (item.open) track("faq_opened", { question: item.querySelector("summary")?.textContent.trim() });
+  });
 });
 init().catch(error => console.error(error));
