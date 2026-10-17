@@ -44,6 +44,23 @@ const $ = id => document.getElementById(id);
 const track = (name, params = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
 };
+const currencySelects = [];
+
+function closeCurrencySelects(target) {
+  currencySelects.forEach(({ wrapper, list, button }) => {
+    if (!target || !wrapper.contains(target)) {
+      list.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+document.addEventListener("pointerdown", event => closeCurrencySelects(event.target));
+document.addEventListener("click", event => closeCurrencySelects(event.target));
+document.addEventListener("focusin", event => closeCurrencySelects(event.target));
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeCurrencySelects();
+});
 
 function fillSelect(select, selected) {
   select.innerHTML = currencies
@@ -92,15 +109,11 @@ function fillSelect(select, selected) {
   });
 
   button.addEventListener("click", () => {
+    closeCurrencySelects(wrapper);
     list.hidden = !list.hidden;
     button.setAttribute("aria-expanded", String(!list.hidden));
   });
-  document.addEventListener("pointerdown", event => {
-    if (!wrapper.contains(event.target)) {
-      list.hidden = true;
-      button.setAttribute("aria-expanded", "false");
-    }
-  });
+  currencySelects.push({ wrapper, list, button });
   select.hidden = true;
   list.hidden = true;
   updateButton();
