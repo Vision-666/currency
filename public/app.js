@@ -162,7 +162,7 @@ function renderChart() {
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
   const formatRate = value => value.toFixed(4);
-  const formatDate = date => new Intl.DateTimeFormat(undefined, selectedRange === "30d"
+  const formatDate = date => new Intl.DateTimeFormat(undefined, ["6h", "1d", "30d"].includes(selectedRange)
     ? { month: "short", day: "numeric" }
     : { month: "short", year: "numeric" }).format(new Date(date));
   const yTicks = [min, min + range / 2, max];
@@ -217,7 +217,8 @@ async function loadChart(base, quote) {
   if (Number.isFinite(liveRate)) {
     chartPoints.push({ date: new Date().toISOString(), rate: liveRate });
   }
-  const rangeLabel = selectedRange === "30d" ? "30-day" : selectedRange === "all" ? "All-time" : selectedRange.replace("y", "-year");
+  const rangeLabels = { "6h": "6-hour", "1d": "1-day", "30d": "30-day", "1y": "1-year", "3y": "3-year", "5y": "5-year", all: "All-time" };
+  const rangeLabel = rangeLabels[selectedRange] || selectedRange;
   $("chartRangeLabel").textContent = `${base}/${quote} currency pair · ${rangeLabel}`;
   $("chartStatus").textContent = `Live updates every minute · ${base}/${quote}`;
   renderChart();

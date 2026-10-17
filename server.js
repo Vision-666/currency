@@ -17,7 +17,7 @@ async function getLiveRates(base) {
 async function getHistoricalRates(base, quote, range) {
   const end = new Date();
   const start = new Date(end);
-  const days = { "30d": 30, "1y": 365, "3y": 1095, "5y": 1825 }[range];
+  const days = { "6h": 1, "1d": 1, "30d": 30, "1y": 365, "3y": 1095, "5y": 1825 }[range];
   if (days) start.setDate(start.getDate() - days);
   else start.setTime(Date.UTC(1999, 0, 1));
   const formatDate = date => date.toISOString().slice(0, 10);
