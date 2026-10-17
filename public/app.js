@@ -40,6 +40,7 @@ let ratesUpdatedAt = "";
 let chartPoints = [];
 let selectedRange = "30d";
 let chartPoll;
+const liveSamples = new Map();
 const $ = id => document.getElementById(id);
 const track = (name, params = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
@@ -129,6 +130,18 @@ function convert(amount, from, to) {
   return result.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function recordLiveSample(base, quote, rate, timestamp) {
+  if (!Number.isFinite(rate)) return;
+  const key = `${base}/${quote}`;
+  const samples = liveSamples.get(key) || [];
+  const next = samples.filter(point => Date.now() - new Date(point.date).getTime() <= 24 * 60 * 60 * 1000);
+  const last = next[next.length - 1];
+  if (!last || new Date(timestamp).getTime() - new Date(last.date).getTime() >= 30_000) {
+    next.push({ date: timestamp, rate });
+  }
+  liveSamples.set(key, next);
+}
+
 function updateConverter() {
   const from = $("convertFrom").value;
   const to = $("convertTo").value;
@@ -216,15 +229,26 @@ async function loadChart(base, quote) {
   const response = await fetch(`/api/rates/history?base=${encodeURIComponent(base)}&quote=${encodeURIComponent(quote)}&range=${selectedRange}`);
   const result = await response.json();
   if (!response.ok) throw new Error(result.error || "Live chart unavailable");
-  chartPoints = result.points;
   const liveRate = rates[quote];
-  if (Number.isFinite(liveRate)) {
-    chartPoints.push({ date: new Date().toISOString(), rate: liveRate });
+  const now = new Date().toISOString();
+  recordLiveSample(base, quote, liveRate, now);
+  const samples = liveSamples.get(`${base}/${quote}`) || [];
+  if (selectedRange === "6h") {
+    const cutoff = Date.now() - 6 * 60 * 60 * 1000;
+    chartPoints = samples.filter(point => new Date(point.date).getTime() >= cutoff);
+  } else if (selectedRange === "1d") {
+    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+    chartPoints = [...result.points.filter(point => new Date(point.date).getTime() >= cutoff), ...samples.filter(point => new Date(point.date).getTime() >= cutoff)];
+  } else {
+    chartPoints = result.points;
+    if (Number.isFinite(liveRate)) chartPoints.push({ date: now, rate: liveRate });
   }
   const rangeLabels = { "6h": "6-hour", "1d": "1-day", "30d": "30-day", "1y": "1-year", "3y": "3-year", "5y": "5-year", all: "All-time" };
   const rangeLabel = rangeLabels[selectedRange] || selectedRange;
   $("chartRangeLabel").textContent = `${base}/${quote} currency pair · ${rangeLabel}`;
-  $("chartStatus").textContent = `Live updates every minute · ${base}/${quote}`;
+  $("chartStatus").textContent = selectedRange === "6h" && chartPoints.length < 2
+    ? `Collecting live samples every minute · ${base}/${quote}`
+    : `Live updates every minute · ${base}/${quote}`;
   renderChart();
 }
 
