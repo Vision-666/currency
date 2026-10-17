@@ -15,6 +15,23 @@ async function getLiveRates(base) {
 }
 
 async function getHistoricalRates(base, quote, range) {
+  if (range === "6h" || range === "1d") {
+    const symbol = `${base}${quote}=X`;
+    const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=5m&range=1d`, {
+      headers: { "User-Agent": "Mozilla/5.0 k4currency/1.0" }
+    });
+    if (!response.ok) throw new Error("Intraday exchange rates are temporarily unavailable.");
+    const data = await response.json();
+    const result = data.chart?.result?.[0];
+    const timestamps = result?.timestamp || [];
+    const closes = result?.indicators?.quote?.[0]?.close || [];
+    const points = timestamps
+      .map((timestamp, index) => ({ date: new Date(timestamp * 1000).toISOString(), rate: closes[index] }))
+      .filter(point => Number.isFinite(point.rate));
+    const cutoff = Date.now() - (range === "6h" ? 6 : 24) * 60 * 60 * 1000;
+    const recentPoints = points.filter(point => new Date(point.date).getTime() >= cutoff);
+    return recentPoints.length > 0 ? recentPoints : points.slice(-(range === "6h" ? 72 : 288));
+  }
   const end = new Date();
   const start = new Date(end);
   const days = { "6h": 1, "1d": 1, "30d": 30, "1y": 365, "3y": 1095, "5y": 1825 }[range];
