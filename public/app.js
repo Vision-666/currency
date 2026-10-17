@@ -143,7 +143,9 @@ function renderChart() {
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
   const formatRate = value => value.toFixed(4);
-  const formatDate = date => new Intl.DateTimeFormat(undefined, { month: "short", year: "numeric" }).format(new Date(date));
+  const formatDate = date => new Intl.DateTimeFormat(undefined, selectedRange === "30d"
+    ? { month: "short", day: "numeric" }
+    : { month: "short", year: "numeric" }).format(new Date(date));
   const yTicks = [min, min + range / 2, max];
   const yMarkup = yTicks.map((value, index) => {
     const y = top + plotHeight - (index / 2) * plotHeight;
@@ -155,7 +157,8 @@ function renderChart() {
     return `<text x="${x}" y="${height - 20}" class="chart-axis-label" text-anchor="${index === 0 ? "start" : index === chartPoints.length - 1 ? "end" : "middle"}">${formatDate(chartPoints[index].date)}</text>`;
   }).join("");
   const last = chartPoints[chartPoints.length - 1];
-  chart.innerHTML = `<text x="14" y="${top + plotHeight / 2}" class="chart-axis-title" transform="rotate(-90 14 ${top + plotHeight / 2})">Rate</text>${yMarkup}<line x1="${left}" y1="${top}" x2="${left}" y2="${top + plotHeight}" class="chart-axis"></line><line x1="${left}" y1="${top + plotHeight}" x2="${width - right}" y2="${top + plotHeight}" class="chart-axis"></line><polyline points="${points}" fill="none" stroke="#5968dc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></polyline><circle class="chart-current-point" cx="${left + plotWidth}" cy="${top + plotHeight - ((last.rate - min) / range) * plotHeight}" r="3.5" fill="#14231f"><title>${formatDate(last.date)}: ${formatRate(last.rate)}</title></circle><line class="chart-hover-line" x1="0" y1="${top}" x2="0" y2="${top + plotHeight}"></line><circle class="chart-hover-point" cx="0" cy="0" r="4"></circle><rect class="chart-hover-area" x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}" fill="transparent"></rect>${xMarkup}<text x="${left + plotWidth / 2}" y="${height - 3}" class="chart-axis-title" text-anchor="middle">Date</text>`;
+  const areaPoints = `${left},${top + plotHeight} ${points} ${left + plotWidth},${top + plotHeight}`;
+  chart.innerHTML = `<text x="14" y="${top + plotHeight / 2}" class="chart-axis-title" transform="rotate(-90 14 ${top + plotHeight / 2})">Rate</text>${yMarkup}<rect x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}" class="chart-plot"></rect><line x1="${left}" y1="${top}" x2="${left}" y2="${top + plotHeight}" class="chart-axis"></line><line x1="${left}" y1="${top + plotHeight}" x2="${width - right}" y2="${top + plotHeight}" class="chart-axis"></line><polygon points="${areaPoints}" class="chart-area"></polygon><polyline points="${points}" fill="none" stroke="#5968dc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></polyline><circle class="chart-current-point" cx="${left + plotWidth}" cy="${top + plotHeight - ((last.rate - min) / range) * plotHeight}" r="3.5" fill="#14231f"><title>${formatDate(last.date)}: ${formatRate(last.rate)}</title></circle><line class="chart-hover-line" x1="0" y1="${top}" x2="0" y2="${top + plotHeight}"></line><circle class="chart-hover-point" cx="0" cy="0" r="4"></circle><rect class="chart-hover-area" x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}" fill="transparent"></rect>${xMarkup}<text x="${left + plotWidth / 2}" y="${height - 3}" class="chart-axis-title" text-anchor="middle">Date</text>`;
   $("chartDetails").textContent = `${formatDate(chartPoints[0].date)}: ${formatRate(chartPoints[0].rate)} · Latest: ${formatDate(last.date)}: ${formatRate(last.rate)}`;
   const hoverLine = chart.querySelector(".chart-hover-line");
   const hoverPoint = chart.querySelector(".chart-hover-point");
