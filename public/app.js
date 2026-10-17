@@ -172,7 +172,7 @@ function renderChart() {
   const yTicks = Array.from({ length: gridSteps + 1 }, (_, index) => min + (range * index) / gridSteps);
   const yMarkup = yTicks.map((value, index) => {
     const y = top + plotHeight - (index / gridSteps) * plotHeight;
-    return `<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" class="chart-grid"></line><text x="${left - 6}" y="${y + 3}" class="chart-axis-label" text-anchor="end">${formatRate(value)}</text>`;
+    return `<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" class="chart-grid" stroke="#cbd6cf" stroke-opacity=".8" stroke-width="1"></line><text x="${left - 6}" y="${y + 3}" class="chart-axis-label" text-anchor="end">${formatRate(value)}</text>`;
   }).join("");
   const xIndexes = Array.from({ length: gridSteps + 1 }, (_, index) => Math.round((displayPoints.length - 1) * index / gridSteps));
   const xMarkup = xIndexes.map(index => {
@@ -181,7 +181,7 @@ function renderChart() {
   }).join("");
   const xGridMarkup = xIndexes.map(index => {
     const x = left + (index / (displayPoints.length - 1)) * plotWidth;
-    return `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + plotHeight}" class="chart-grid-vertical"></line>`;
+    return `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + plotHeight}" class="chart-grid-vertical" stroke="#cbd6cf" stroke-opacity=".8" stroke-width="1"></line>`;
   }).join("");
   const last = displayPoints[displayPoints.length - 1];
   const areaPoints = `${left},${top + plotHeight} ${points} ${left + plotWidth},${top + plotHeight}`;
