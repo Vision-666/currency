@@ -113,7 +113,7 @@ function fillSelect(select, selected) {
     list.hidden = !list.hidden;
     button.setAttribute("aria-expanded", String(!list.hidden));
   });
-  currencySelects.push({ wrapper, list, button });
+  currencySelects.push({ wrapper, list, button, select, updateButton });
   select.hidden = true;
   list.hidden = true;
   updateButton();
@@ -297,6 +297,9 @@ $("swap").addEventListener("click", () => {
   const old = $("convertFrom").value;
   $("convertFrom").value = $("convertTo").value;
   $("convertTo").value = old;
+  currencySelects.forEach(({ select, updateButton }) => {
+    if (select === $("convertFrom") || select === $("convertTo")) updateButton();
+  });
   track("currency_swap", { from_currency: $("convertFrom").value, to_currency: $("convertTo").value });
   loadRates($("convertFrom").value).catch(error => console.error(error));
 });
