@@ -41,6 +41,16 @@ let chartPoints = [];
 let selectedRange = "30d";
 let chartPoll;
 const liveSamples = new Map();
+const liveSampleStorageKey = "k4currency-live-samples";
+
+try {
+  const storedSamples = JSON.parse(localStorage.getItem(liveSampleStorageKey) || "{}");
+  Object.entries(storedSamples).forEach(([key, samples]) => {
+    if (Array.isArray(samples)) liveSamples.set(key, samples);
+  });
+} catch (error) {
+  console.error("Unable to restore live chart samples.", error);
+}
 const $ = id => document.getElementById(id);
 const track = (name, params = {}) => {
   if (typeof window.gtag === "function") window.gtag("event", name, params);
@@ -140,6 +150,11 @@ function recordLiveSample(base, quote, rate, timestamp) {
     next.push({ date: timestamp, rate });
   }
   liveSamples.set(key, next);
+  try {
+    localStorage.setItem(liveSampleStorageKey, JSON.stringify(Object.fromEntries(liveSamples)));
+  } catch (error) {
+    console.error("Unable to save live chart samples.", error);
+  }
 }
 
 function updateConverter() {
@@ -178,12 +193,13 @@ function renderChart() {
   const formatDate = date => new Intl.DateTimeFormat(undefined, ["6h", "1d", "30d"].includes(selectedRange)
     ? { month: "short", day: "numeric" }
     : { month: "short", year: "numeric" }).format(new Date(date));
-  const yTicks = [min, min + range / 2, max];
+  const gridSteps = 5;
+  const yTicks = Array.from({ length: gridSteps + 1 }, (_, index) => min + (range * index) / gridSteps);
   const yMarkup = yTicks.map((value, index) => {
-    const y = top + plotHeight - (index / 2) * plotHeight;
+    const y = top + plotHeight - (index / gridSteps) * plotHeight;
     return `<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" class="chart-grid"></line><text x="${left - 6}" y="${y + 3}" class="chart-axis-label" text-anchor="end">${formatRate(value)}</text>`;
   }).join("");
-  const xIndexes = [0, Math.floor((chartPoints.length - 1) / 2), chartPoints.length - 1];
+  const xIndexes = Array.from({ length: gridSteps + 1 }, (_, index) => Math.round((chartPoints.length - 1) * index / gridSteps));
   const xMarkup = xIndexes.map(index => {
     const x = left + (index / (chartPoints.length - 1)) * plotWidth;
     return `<text x="${x}" y="${height - 20}" class="chart-axis-label" text-anchor="${index === 0 ? "start" : index === chartPoints.length - 1 ? "end" : "middle"}">${formatDate(chartPoints[index].date)}</text>`;
@@ -238,7 +254,10 @@ async function loadChart(base, quote) {
     chartPoints = samples.filter(point => new Date(point.date).getTime() >= cutoff);
   } else if (selectedRange === "1d") {
     const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    chartPoints = [...result.points.filter(point => new Date(point.date).getTime() >= cutoff), ...samples.filter(point => new Date(point.date).getTime() >= cutoff)];
+    const recentSamples = samples.filter(point => new Date(point.date).getTime() >= cutoff);
+    chartPoints = recentSamples.length >= 2
+      ? recentSamples
+      : [...result.points.filter(point => new Date(point.date).getTime() >= cutoff), ...recentSamples];
   } else {
     chartPoints = result.points;
     if (Number.isFinite(liveRate)) chartPoints.push({ date: now, rate: liveRate });
