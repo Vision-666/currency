@@ -95,6 +95,12 @@ function fillSelect(select, selected) {
     list.hidden = !list.hidden;
     button.setAttribute("aria-expanded", String(!list.hidden));
   });
+  document.addEventListener("pointerdown", event => {
+    if (!wrapper.contains(event.target)) {
+      list.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+    }
+  });
   select.hidden = true;
   list.hidden = true;
   updateButton();
