@@ -165,7 +165,9 @@ function renderChart() {
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
   const formatRate = value => value.toFixed(4);
-  const formatDate = date => new Intl.DateTimeFormat(undefined, ["6h", "1d", "30d"].includes(selectedRange)
+  const formatDate = date => new Intl.DateTimeFormat(undefined, selectedRange === "6h" || selectedRange === "1d"
+    ? { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }
+    : selectedRange === "30d"
     ? { month: "short", day: "numeric" }
     : { month: "short", year: "numeric" }).format(new Date(date));
   const gridSteps = 4;
