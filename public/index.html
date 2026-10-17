@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20261017-13">
+  <link rel="stylesheet" href="/styles.css?v=20261017-17">
 </head>
 <body>
   <header class="nav shell">
@@ -65,35 +65,40 @@
 
     <section class="stats">    <div><strong>30</strong><span>major currencies supported</span></div><div><strong>Live</strong><span>mid-market rates</span></div><div><strong>24/7</strong><span>rate availability</span></div></section>
 
-    <section class="seo-content seo-use-cases" aria-labelledby="use-cases-heading">
-      <div class="section-intro">
-        <p class="eyebrow">BUILT FOR EVERYDAY DECISIONS</p>
-        <h2 id="use-cases-heading">Know the rate before you move money.</h2>
+    <section class="world-clocks" aria-labelledby="world-clocks-heading">
+      <div class="world-clocks-heading">
+        <p class="eyebrow">WORLD CLOCK</p>
+        <h2 id="world-clocks-heading">Local time, everywhere.</h2>
       </div>
-      <div class="use-case-list">
-        <article>
-          <h3>Travel and holidays</h3>
-          <p>Estimate what your spending money is worth in another country and compare a currency pair before exchanging cash.</p>
+      <div class="clock-grid">
+        <article class="clock-card">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label for="clockZone0">Location</label><select id="clockZone0" data-clock-select="0"></select><time id="clockTime0" datetime=""></time><small id="clockDate0"></small></div>
         </article>
-        <article>
-          <h3>Online shopping</h3>
-          <p>Convert product prices, subscriptions, and invoices so international purchases are easier to understand.</p>
+        <article class="clock-card">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label for="clockZone1">Location</label><select id="clockZone1" data-clock-select="1"></select><time id="clockTime1" datetime=""></time><small id="clockDate1"></small></div>
         </article>
-        <article>
-          <h3>International payments</h3>
-          <p>Check an indicative mid-market rate before sending money. Your bank or payment provider may apply fees or a margin.</p>
+        <article class="clock-card">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label for="clockZone2">Location</label><select id="clockZone2" data-clock-select="2"></select><time id="clockTime2" datetime=""></time><small id="clockDate2"></small></div>
+        </article>
+        <article class="clock-card">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label for="clockZone3">Location</label><select id="clockZone3" data-clock-select="3"></select><time id="clockTime3" datetime=""></time><small id="clockDate3"></small></div>
         </article>
       </div>
     </section>
 
-    <section class="seo-content currency-coverage" aria-labelledby="coverage-heading">
-      <div class="section-intro">
-        <p class="eyebrow">SUPPORTED CURRENCIES</p>
-        <h2 id="coverage-heading">Convert the currencies people use most.</h2>
+    <section class="globe-section" aria-labelledby="globe-heading">
+      <div class="globe-copy">
+        <p class="eyebrow">CURRENCY WITHOUT BORDERS</p>
+        <h2 id="globe-heading">One world.<br><em>Many ways to move.</em></h2>
+        <p>Explore exchange rates across the currencies that connect travelers, businesses, and families around the world.</p>
+        <p class="globe-note">Drag to rotate · Scroll to zoom</p>
       </div>
-      <div class="coverage-copy">
-        <p>Use the free converter for popular currency pairs including USD to CAD, USD to EUR, USD to GBP, EUR to USD, GBP to USD, CAD to USD, AUD to USD, JPY to USD, INR to USD, and CHF to EUR.</p>
-        <p>k4currency supports AUD, BRL, CAD, CNY, CZK, DKK, EUR, HKD, HUF, ISK, INR, IDR, ILS, JPY, MYR, MXN, NZD, NOK, PHP, PLN, RON, SGD, ZAR, KRW, SEK, CHF, THB, TRY, GBP, and USD.</p>
+      <div class="globe-art">
+        <canvas id="worldGlobe" class="world-globe" width="640" height="420" role="img" aria-label="Interactive globe showing real country boundaries"></canvas>
       </div>
     </section>
 
