@@ -171,7 +171,10 @@ function updateConverter() {
 
 function renderChart() {
   const chart = $("rateChart");
-  if (!chart || chartPoints.length < 2) return;
+  if (!chart || chartPoints.length === 0) return;
+  const displayPoints = chartPoints.length === 1
+    ? [{ date: new Date(new Date(chartPoints[0].date).getTime() - 60 * 60 * 1000).toISOString(), rate: chartPoints[0].rate }, chartPoints[0]]
+    : chartPoints;
   const width = 480;
   const height = 200;
   const left = 52;
@@ -180,12 +183,12 @@ function renderChart() {
   const bottom = 45;
   const plotWidth = width - left - right;
   const plotHeight = height - top - bottom;
-  const values = chartPoints.map(point => point.rate);
+  const values = displayPoints.map(point => point.rate);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || max * 0.01 || 1;
-  const points = chartPoints.map((point, index) => {
-    const x = left + (index / (chartPoints.length - 1)) * plotWidth;
+  const points = displayPoints.map((point, index) => {
+    const x = left + (index / (displayPoints.length - 1)) * plotWidth;
     const y = top + plotHeight - ((point.rate - min) / range) * plotHeight;
     return `${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(" ");
@@ -199,16 +202,16 @@ function renderChart() {
     const y = top + plotHeight - (index / gridSteps) * plotHeight;
     return `<line x1="${left}" y1="${y}" x2="${width - right}" y2="${y}" class="chart-grid"></line><text x="${left - 6}" y="${y + 3}" class="chart-axis-label" text-anchor="end">${formatRate(value)}</text>`;
   }).join("");
-  const xIndexes = Array.from({ length: gridSteps + 1 }, (_, index) => Math.round((chartPoints.length - 1) * index / gridSteps));
+  const xIndexes = Array.from({ length: gridSteps + 1 }, (_, index) => Math.round((displayPoints.length - 1) * index / gridSteps));
   const xMarkup = xIndexes.map(index => {
-    const x = left + (index / (chartPoints.length - 1)) * plotWidth;
-    return `<text x="${x}" y="${height - 20}" class="chart-axis-label" text-anchor="${index === 0 ? "start" : index === chartPoints.length - 1 ? "end" : "middle"}">${formatDate(chartPoints[index].date)}</text>`;
+    const x = left + (index / (displayPoints.length - 1)) * plotWidth;
+    return `<text x="${x}" y="${height - 20}" class="chart-axis-label" text-anchor="${index === 0 ? "start" : index === displayPoints.length - 1 ? "end" : "middle"}">${formatDate(displayPoints[index].date)}</text>`;
   }).join("");
   const xGridMarkup = xIndexes.map(index => {
-    const x = left + (index / (chartPoints.length - 1)) * plotWidth;
+    const x = left + (index / (displayPoints.length - 1)) * plotWidth;
     return `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + plotHeight}" class="chart-grid-vertical"></line>`;
   }).join("");
-  const last = chartPoints[chartPoints.length - 1];
+  const last = displayPoints[displayPoints.length - 1];
   const areaPoints = `${left},${top + plotHeight} ${points} ${left + plotWidth},${top + plotHeight}`;
   chart.innerHTML = `<defs><linearGradient id="horizontalGridFade" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dfe6df" stop-opacity=".15"></stop><stop offset=".5" stop-color="#9eada5" stop-opacity=".5"></stop><stop offset="1" stop-color="#dfe6df" stop-opacity=".15"></stop></linearGradient><linearGradient id="verticalGridFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe6df" stop-opacity=".15"></stop><stop offset=".5" stop-color="#9eada5" stop-opacity=".5"></stop><stop offset="1" stop-color="#dfe6df" stop-opacity=".15"></stop></linearGradient></defs><text x="14" y="${top + plotHeight / 2}" class="chart-axis-title" transform="rotate(-90 14 ${top + plotHeight / 2})">Rate</text><rect x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}" class="chart-plot"></rect>${yMarkup}${xGridMarkup}<line x1="${left}" y1="${top}" x2="${left}" y2="${top + plotHeight}" class="chart-axis"></line><line x1="${left}" y1="${top + plotHeight}" x2="${width - right}" y2="${top + plotHeight}" class="chart-axis"></line><polygon points="${areaPoints}" class="chart-area"></polygon><polyline points="${points}" fill="none" stroke="#5968dc" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></polyline><circle class="chart-current-point" cx="${left + plotWidth}" cy="${top + plotHeight - ((last.rate - min) / range) * plotHeight}" r="3.5" fill="#14231f"><title>${formatDate(last.date)}: ${formatRate(last.rate)}</title></circle><line class="chart-hover-line" x1="0" y1="${top}" x2="0" y2="${top + plotHeight}"></line><circle class="chart-hover-point" cx="0" cy="0" r="4"></circle><rect class="chart-hover-area" x="${left}" y="${top}" width="${plotWidth}" height="${plotHeight}" fill="transparent"></rect>${xMarkup}<text x="${left + plotWidth / 2}" y="${height - 3}" class="chart-axis-title" text-anchor="middle">Date</text>`;
   $("chartDetails").textContent = `${formatDate(chartPoints[0].date)}: ${formatRate(chartPoints[0].rate)} · Latest: ${formatDate(last.date)}: ${formatRate(last.rate)}`;
@@ -217,8 +220,8 @@ function renderChart() {
   const hoverArea = chart.querySelector(".chart-hover-area");
   const tooltip = $("chartTooltip");
   const showPoint = index => {
-    const point = chartPoints[index];
-    const x = left + (index / (chartPoints.length - 1)) * plotWidth;
+    const point = displayPoints[index];
+    const x = left + (index / (displayPoints.length - 1)) * plotWidth;
     const y = top + plotHeight - ((point.rate - min) / range) * plotHeight;
     hoverLine.setAttribute("x1", x);
     hoverLine.setAttribute("x2", x);
@@ -232,7 +235,7 @@ function renderChart() {
   hoverArea.addEventListener("mousemove", event => {
     const bounds = hoverArea.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
-    showPoint(Math.round(ratio * (chartPoints.length - 1)));
+    showPoint(Math.round(ratio * (displayPoints.length - 1)));
   });
   hoverArea.addEventListener("mouseleave", () => {
     hoverLine.style.visibility = "hidden";
