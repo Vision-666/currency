@@ -38,7 +38,7 @@
 
   <main class="shell">
     <section class="hero">
-      <div><p class="eyebrow">GLOBAL MONEY, MADE SIMPLE</p><h1>Free currency converter<br><em>with live exchange rates.</em></h1><p class="hero-copy">Convert 30 major currencies with clear, live mid-market exchange rates for travel, shopping, and international payments.</p><a class="button primary" href="#convert">Convert currency <span>→</span></a></div>
+      <div><p class="eyebrow">GLOBAL MONEY, MADE SIMPLE</p><h1>Free currency converter<br><em>with live exchange rates.</em></h1><p class="hero-copy">Convert 30 major currencies with clear, live mid-market exchange rates for travel, shopping, and international payments.</p><div class="hero-actions"><a class="button primary" href="#convert">Convert currency <span>→</span></a><button class="button support-button" id="supportUs" type="button">Support us <span>♥</span></button></div></div>
       <div id="convert" class="card converter-card">
         <div class="card-top"><h3>Currency converter</h3><span class="live"><i></i> Live rates</span></div>
         <div class="money-row"><label for="convertAmount">You send<input id="convertAmount" type="number" value="1000" min="0" step="0.01"></label><select id="convertFrom" aria-label="Currency to convert from"></select></div>
@@ -109,6 +109,30 @@
     </section>
 
   </main>
+  <div class="support-modal" id="supportModal" hidden>
+    <div class="support-backdrop" data-close-support></div>
+    <section class="support-dialog" role="dialog" aria-modal="true" aria-labelledby="support-heading">
+      <button class="support-close" id="closeSupport" type="button" aria-label="Close support options">×</button>
+      <p class="eyebrow">KEEP K4CURRENCY GOING</p>
+      <h2 id="support-heading">Support us</h2>
+      <p class="support-intro">If k4currency is useful, you can help cover hosting and data costs through either option below.</p>
+      <div class="support-options">
+        <article class="support-option">
+          <div class="support-option-heading"><span class="support-icon btc-icon">₿</span><h3>Donate with Bitcoin</h3></div>
+          <p>Send BTC to this wallet address:</p>
+          <div class="btc-address" id="btcAddress">3Fka1auuaUq8XhuPAZnhiFPzfXg7XBBX1e</div>
+          <button class="support-action" id="copyBtc" type="button">Copy BTC address</button>
+          <span class="support-status" id="btcStatus" role="status"></span>
+        </article>
+        <article class="support-option">
+          <div class="support-option-heading"><span class="support-icon stripe-icon">S</span><h3>Support with Stripe</h3></div>
+          <p>Stripe is available as a secure card-payment option.</p>
+          <button class="support-action stripe-action" id="stripeSupport" type="button">Continue with Stripe</button>
+          <span class="support-status" id="stripeStatus" role="status">Secure checkout opens in a new tab.</span>
+        </article>
+      </div>
+    </section>
+  </div>
   <footer class="shell"><span class="brand"><span class="brand-mark">k4</span><span>currency</span></span><span>© 2026 k4currency. All rights reserved.</span></footer>
   <script type="application/ld+json">
   {
@@ -165,6 +189,7 @@
     ]
   }
   </script>
-  <script src="/app.js?v=20261017-17"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="/app.js?v=20261017-18"></script>
 </body>
 </html>

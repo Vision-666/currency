@@ -309,9 +309,48 @@ $("convertAmount").addEventListener("change", () => {
 chartPoll = window.setInterval(() => {
   loadRates($("convertFrom").value).catch(error => console.error(error));
 }, 60_000);
+const stripePublishableKey = "pk_live_51URfb41WOyNGSfQZeUwiQHgANowWdB1AVXMovmVpeONJTRTt9FW6hMnPGX15VTecvBXDVbHbtBd5fw3KPkhMCwW800RBvcjqaU";
+const supportModal = $("supportModal");
+const openSupport = () => {
+  supportModal.hidden = false;
+  $("supportUs").setAttribute("aria-expanded", "true");
+  $("closeSupport").focus();
+  track("support_opened");
+};
+const closeSupport = () => {
+  supportModal.hidden = true;
+  $("supportUs").setAttribute("aria-expanded", "false");
+};
+$("supportUs").setAttribute("aria-expanded", "false");
+$("supportUs").addEventListener("click", openSupport);
+$("closeSupport").addEventListener("click", closeSupport);
+supportModal.querySelector("[data-close-support]").addEventListener("click", closeSupport);
+$("copyBtc").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText($("btcAddress").textContent);
+    $("btcStatus").textContent = "Copied.";
+  } catch (error) {
+    $("btcStatus").textContent = "Copy failed. Select the address manually.";
+    console.error(error);
+  }
+  track("btc_support_selected");
+});
+$("stripeSupport").addEventListener("click", () => {
+  const stripeReady = typeof window.Stripe === "function" && stripePublishableKey.startsWith("pk_");
+  if (!stripeReady) {
+    $("stripeStatus").textContent = "Stripe could not be loaded. Please try again.";
+    return;
+  }
+  window.open("https://buy.stripe.com/dRm9AM2923ju48FePE6sw00", "_blank", "noopener,noreferrer");
+  $("stripeStatus").textContent = "Stripe checkout opened in a new tab.";
+  track("stripe_support_selected");
+});
 document.querySelectorAll("details").forEach(item => {
   item.addEventListener("toggle", () => {
     if (item.open) track("faq_opened", { question: item.querySelector("summary")?.textContent.trim() });
   });
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !supportModal.hidden) closeSupport();
 });
 init().catch(error => console.error(error));
