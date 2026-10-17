@@ -14,6 +14,19 @@ async function getLiveRates(base) {
   return { [base]: 1, ...data.rates };
 }
 
+async function getHistoricalRates(base, quote, range) {
+  const end = new Date();
+  const start = new Date(end);
+  const days = { "30d": 30, "1y": 365, "3y": 1095, "5y": 1825 }[range];
+  if (days) start.setDate(start.getDate() - days);
+  else start.setTime(Date.UTC(1999, 0, 1));
+  const formatDate = date => date.toISOString().slice(0, 10);
+  const response = await fetch(`https://api.frankfurter.app/${formatDate(start)}..${formatDate(end)}?from=${encodeURIComponent(base)}&to=${encodeURIComponent(quote)}`);
+  if (!response.ok) throw new Error("Historical exchange rates are temporarily unavailable.");
+  const data = await response.json();
+  return Object.entries(data.rates).map(([date, values]) => ({ date, rate: values[quote] })).filter(point => Number.isFinite(point.rate));
+}
+
 function sendJson(res, status, body) {
   res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
   res.end(JSON.stringify(body));
@@ -51,6 +64,16 @@ const server = http.createServer(async (req, res) => {
     const base = (url.searchParams.get("base") || "USD").toUpperCase();
     try {
       return sendJson(res, 200, { base, rates: await getLiveRates(base), updatedAt: new Date().toISOString() });
+    } catch (error) {
+      return sendJson(res, 502, { error: error.message });
+    }
+  }
+  if (req.method === "GET" && url.pathname === "/api/rates/history") {
+    const base = (url.searchParams.get("base") || "USD").toUpperCase();
+    const quote = (url.searchParams.get("quote") || "EUR").toUpperCase();
+    const range = url.searchParams.get("range") || "30d";
+    try {
+      return sendJson(res, 200, { base, quote, range, points: await getHistoricalRates(base, quote, range) });
     } catch (error) {
       return sendJson(res, 502, { error: error.message });
     }
