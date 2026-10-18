@@ -49,8 +49,9 @@ function formatParts(date, zone) {
 
 function timeInputValue(date, zone) {
   const parts = formatParts(date, zone);
-  const period = parts.hour >= 12 ? "PM" : "AM";
-  return `${String(parts.hour % 24).padStart(2, "0")}:${String(parts.minute).padStart(2, "0")}:${String(parts.second).padStart(2, "0")} ${period}`;
+  const hour = parts.hour === 24 ? 0 : parts.hour;
+  const period = hour >= 12 ? "PM" : "AM";
+  return `${String(hour).padStart(2, "0")}:${String(parts.minute).padStart(2, "0")}:${String(parts.second).padStart(2, "0")} ${period}`;
 }
 
 function setReferenceFromInput(value, zone) {
@@ -77,7 +78,9 @@ function updateWorldClocks() {
     document.getElementById(`clockDate${index}`).textContent = date;
     const locationButton = document.getElementById(`clockLocation${index}`);
     locationButton.textContent = location.city;
-    document.getElementById(`clockTime${index}`).textContent = time;
+    const timeDisplay = document.getElementById(`clockTime${index}`);
+    timeDisplay.textContent = time;
+    timeDisplay.setAttribute("aria-label", `Choose time for ${location.city}: ${time}`);
     const face = select.closest(".clock-card").querySelector(".clock-face");
     face.querySelector(".clock-hour").style.transform = `rotate(${(parts.hour % 12) * 30 + parts.minute * .5}deg)`;
     face.querySelector(".clock-minute").style.transform = `rotate(${parts.minute * 6 + parts.second * .1}deg)`;

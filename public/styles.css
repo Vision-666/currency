@@ -69,7 +69,7 @@
 .worldclock-page .worldclock-grid-section .clock-card{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;min-width:0;padding:13px;background:#f7faf7;border:1px solid #d9e6dc;border-radius:14px;box-shadow:0 8px 18px #07130f26}
 .worldclock-page .worldclock-grid-section .clock-face{width:40px;height:40px;border-width:2px;background:#e9f5ed;border-color:#668f78}
 .worldclock-page .worldclock-grid-section .clock-location,.worldclock-page .worldclock-grid-section .clock-time-display{color:#172922}
-.worldclock-page .clock-time-display{display:block;width:100%;padding:2px 0;border:0;background:transparent;text-align:left;font:600 17px "Space Grotesk";cursor:pointer}
+.worldclock-page .clock-time-display{display:block;min-height:24px;width:100%;padding:2px 0;border:0;background:transparent;color:#172922!important;text-align:left;font:600 17px/1.35 "Space Grotesk";cursor:pointer;visibility:visible;opacity:1}
 .worldclock-page .clock-time-display:hover{color:#426a52}
 .worldclock-page .worldclock-intro-grid{margin-bottom:42px}
 .worldclock-page .worldclock-hero h1{color:#f4faf5}
