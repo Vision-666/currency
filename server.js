@@ -62,7 +62,8 @@ function readBody(req) {
 }
 
 function serveFile(req, res) {
-  const requested = req.url === "/" ? "/index.html" : req.url.split("?")[0];
+  const pathname = req.url.split("?")[0];
+  const requested = pathname === "/" ? "/index.html" : pathname === "/world-clock" ? "/worldclock.html" : pathname === "/worldclock" ? "/worldclock.html" : pathname;
   const filePath = path.normalize(path.join(publicDir, requested));
   if (!filePath.startsWith(publicDir)) return sendJson(res, 403, { error: "Forbidden" });
   fs.readFile(filePath, (error, data) => {

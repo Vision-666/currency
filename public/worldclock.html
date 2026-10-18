@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>World Clock | k4currency</title>
+  <meta name="description" content="Check the local time in cities around the world with the k4currency world clock.">
+  <link rel="canonical" href="https://k4currency.com/world-clock">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20261018-20">
+</head>
+<body class="worldclock-page">
+  <header class="nav shell">
+    <a class="brand" href="/"><span class="brand-mark">k4</span><span>currency</span></a>
+    <nav aria-label="Primary navigation"><a href="/world-clock" aria-current="page">World clock</a></nav>
+  </header>
+
+  <main class="shell">
+    <section class="world-clocks worldclock-grid-section" aria-labelledby="clocks-heading">
+      <div class="world-clocks-heading">
+        <p class="eyebrow">TIME ZONES</p>
+        <h2 id="clocks-heading">Select a time.</h2>
+      </div>
+      <div class="clock-grid">
+        <article class="clock-card" data-clock-card="0" tabindex="0">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label>Location</label><button class="clock-location" id="clockLocation0" type="button">New York</button><select id="clockZone0" data-clock-select="0" tabindex="-1" aria-label="Choose city for clock 1"></select><input class="clock-time-input" id="clockInput0" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM:SS" aria-label="Set time for clock 1"><small id="clockDate0"></small></div>
+        </article>
+        <article class="clock-card" data-clock-card="1" tabindex="0">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label>Location</label><button class="clock-location" id="clockLocation1" type="button">London</button><select id="clockZone1" data-clock-select="1" tabindex="-1" aria-label="Choose city for clock 2"></select><input class="clock-time-input" id="clockInput1" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM:SS" aria-label="Set time for clock 2"><small id="clockDate1"></small></div>
+        </article>
+        <article class="clock-card" data-clock-card="2" tabindex="0">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label>Location</label><button class="clock-location" id="clockLocation2" type="button">Tokyo</button><select id="clockZone2" data-clock-select="2" tabindex="-1" aria-label="Choose city for clock 3"></select><input class="clock-time-input" id="clockInput2" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM:SS" aria-label="Set time for clock 3"><small id="clockDate2"></small></div>
+        </article>
+        <article class="clock-card" data-clock-card="3" tabindex="0">
+          <div class="clock-face" aria-hidden="true"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i><span></span></div>
+          <div><label>Location</label><button class="clock-location" id="clockLocation3" type="button">Sydney</button><select id="clockZone3" data-clock-select="3" tabindex="-1" aria-label="Choose city for clock 4"></select><input class="clock-time-input" id="clockInput3" type="text" inputmode="numeric" maxlength="8" placeholder="HH:MM:SS" aria-label="Set time for clock 4"><small id="clockDate3"></small></div>
+        </article>
+      </div>
+    </section>
+
+    <div class="worldclock-intro-grid">
+      <div class="worldclock-copy">
+        <button class="reset-clock-button" id="resetClockButton" type="button" hidden>Reset clock</button>
+        <section class="worldclock-hero" aria-labelledby="worldclock-heading">
+          <p class="eyebrow">WORLD CLOCK</p>
+          <h1 id="worldclock-heading">Local time,<br><em>everywhere.</em></h1>
+          <p>Choose a city by selecting any clock. Each clock shows the current local time, and entering a time in one clock instantly synchronizes the other three clocks to the same moment.</p>
+        </section>
+      </div>
+      <div class="globe-art">
+        <canvas id="worldGlobe" class="world-globe" width="640" height="420" role="img" aria-label="Interactive globe showing real country boundaries"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="clock-picker" id="clockPicker" hidden>
+    <button class="clock-picker-backdrop" type="button" data-close-clock-picker aria-label="Close location picker"></button>
+    <section class="clock-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="clock-picker-heading">
+      <button class="clock-picker-close" id="closeClockPicker" type="button" aria-label="Close location picker">×</button>
+      <h2 id="clock-picker-heading">Choose a time</h2>
+      <input class="clock-picker-search" id="clockPickerSearch" type="search" placeholder="Search a city" aria-label="Search cities">
+      <div class="clock-picker-list" id="clockPickerList"></div>
+    </section>
+  </div>
+
+  <footer class="shell"><a class="brand" href="/"><span class="brand-mark">k4</span><span>currency</span></a><span>© 2026 k4currency. All rights reserved.</span></footer>
+  <script src="/worldclock.js?v=20261018-2"></script>
+  <script src="/globe.js?v=20261018-1"></script>
+</body>
+</html>
