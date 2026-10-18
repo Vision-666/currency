@@ -75,10 +75,9 @@ function updateWorldClocks() {
     const time = timeInputValue(referenceTime, select.value);
     const date = new Intl.DateTimeFormat(undefined, { timeZone: select.value, weekday: "short", month: "short", day: "numeric" }).format(referenceTime);
     document.getElementById(`clockDate${index}`).textContent = date;
-    const timeInput = document.getElementById(`clockInput${index}`);
     const locationButton = document.getElementById(`clockLocation${index}`);
     locationButton.textContent = location.city;
-    if (document.activeElement !== timeInput) timeInput.value = time;
+    document.getElementById(`clockTime${index}`).textContent = time;
     const face = select.closest(".clock-card").querySelector(".clock-face");
     face.querySelector(".clock-hour").style.transform = `rotate(${(parts.hour % 12) * 30 + parts.minute * .5}deg)`;
     face.querySelector(".clock-minute").style.transform = `rotate(${parts.minute * 6 + parts.second * .1}deg)`;
@@ -95,7 +94,7 @@ function openPicker(index) {
 
 function openTimePicker(index) {
   timePickerCard = index;
-  const value = document.getElementById(`clockInput${index}`).value.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
+  const value = timeInputValue(referenceTime, document.getElementById(`clockZone${index}`).value).match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
   selectedHour = value ? Number(value[1]) : 0;
   selectedMinute = value ? Number(value[2]) : 0;
   selectedSecond = value && value[3] ? Number(value[3]) : 0;
@@ -110,13 +109,15 @@ function openTimePicker(index) {
     picker.addEventListener("click", event => event.stopPropagation());
     picker.querySelector(".time-picker-done").addEventListener("click", event => {
       event.stopPropagation();
-      const input = document.getElementById(`clockInput${timePickerCard}`);
-      input.value = [selectedHour, selectedMinute, selectedSecond].map(item => String(item).padStart(2, "0")).join(":");
-      input.dispatchEvent(new Event("change", { bubbles: true }));
+      const zone = document.getElementById(`clockZone${timePickerCard}`).value;
+      const value = [selectedHour, selectedMinute, selectedSecond].map(item => String(item).padStart(2, "0")).join(":");
+      if (setReferenceFromInput(value, zone)) showResetControl();
+      updateWorldClocks();
       picker.hidden = true;
     });
   }
   picker.hidden = false;
+  picker.querySelectorAll(".time-scroll").forEach(scroll => { scroll.dataset.positioned = ""; });
   renderScrollPicker();
 }
 
@@ -124,9 +125,8 @@ function renderScrollPicker() {
   const picker = document.querySelector(`.clock-card[data-clock-card="${timePickerCard}"] .inline-time-picker`);
   [["hour", 24], ["minute", 60], ["second", 60]].forEach(([unit, count]) => {
     const scroll = picker.querySelector(`[data-time-unit="${unit}"]`);
-    scroll.innerHTML = "";
     const selected = unit === "hour" ? selectedHour : unit === "minute" ? selectedMinute : selectedSecond;
-    for (let value = 0; value < count; value += 1) {
+    if (!scroll.children.length) for (let value = 0; value < count; value += 1) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "scroll-time-choice";
@@ -136,13 +136,16 @@ function renderScrollPicker() {
         if (unit === "hour") selectedHour = value;
         if (unit === "minute") selectedMinute = value;
         if (unit === "second") selectedSecond = value;
+        scroll.querySelectorAll(".scroll-time-choice").forEach(choice => choice.classList.toggle("selected", Number(choice.textContent) === value));
         updateTimePickerValue();
-        renderScrollPicker();
       });
       scroll.append(button);
     }
     const active = scroll.querySelector(".selected");
-    if (active) scroll.scrollTop = active.offsetTop - scroll.clientHeight / 2 + active.offsetHeight / 2;
+    if (active && !scroll.dataset.positioned) {
+      scroll.scrollTop = active.offsetTop - scroll.clientHeight / 2 + active.offsetHeight / 2;
+      scroll.dataset.positioned = "true";
+    }
   });
   updateTimePickerValue();
 }
@@ -199,13 +202,13 @@ document.getElementById("resetClockButton").hidden = true;
 document.querySelectorAll(".clock-card").forEach(card => {
   const index = Number(card.dataset.clockCard);
   card.addEventListener("click", event => {
-    if (!event.target.closest(".clock-time-input") && !event.target.closest(".clock-location")) openPicker(index);
+    if (!event.target.closest(".clock-time-display") && !event.target.closest(".clock-location")) openPicker(index);
   });
   document.getElementById(`clockLocation${index}`).addEventListener("click", event => {
     event.stopPropagation();
     openPicker(index);
   });
-  document.getElementById(`clockInput${index}`).addEventListener("click", event => {
+  document.getElementById(`clockTime${index}`).addEventListener("click", event => {
     event.stopPropagation();
     openTimePicker(index);
   });
@@ -214,14 +217,6 @@ document.querySelectorAll(".clock-card").forEach(card => {
       event.preventDefault();
       openPicker(index);
     }
-  });
-  document.getElementById(`clockInput${index}`).addEventListener("change", event => {
-    if (!setReferenceFromInput(event.target.value, document.getElementById(`clockZone${index}`).value)) {
-      updateWorldClocks();
-      return;
-    }
-    showResetControl();
-    updateWorldClocks();
   });
 });
 document.getElementById("resetClockButton").addEventListener("click", () => {
