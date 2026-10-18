@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#152923"/>
+  <circle cx="1010" cy="90" r="280" fill="#294239"/>
+  <circle cx="1010" cy="90" r="190" fill="#a7e6bc" opacity=".9"/>
+  <text x="90" y="250" fill="#a7e6bc" font-family="Arial,sans-serif" font-size="42" font-weight="700">K4CURRENCY</text>
+  <text x="90" y="345" fill="#f4faf5" font-family="Arial,sans-serif" font-size="70" font-weight="700">Convert money.</text>
+  <text x="90" y="425" fill="#d0ded4" font-family="Arial,sans-serif" font-size="36">Live rates. Clear answers.</text>
+</svg>
