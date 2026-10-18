@@ -100,6 +100,8 @@ function openTimePicker(index) {
   selectedSecond = value && value[3] ? Number(value[3]) : 0;
   document.querySelectorAll(".inline-time-picker").forEach(picker => picker.hidden = true);
   const card = document.querySelector(`.clock-card[data-clock-card="${index}"]`);
+  document.querySelectorAll(".clock-card").forEach(item => item.classList.remove("time-picker-open"));
+  card.classList.add("time-picker-open");
   let picker = card.querySelector(".inline-time-picker");
   if (!picker) {
     picker = document.createElement("div");
@@ -114,6 +116,7 @@ function openTimePicker(index) {
       if (setReferenceFromInput(value, zone)) showResetControl();
       updateWorldClocks();
       picker.hidden = true;
+      picker.closest(".clock-card").classList.remove("time-picker-open");
     });
   }
   picker.hidden = false;
@@ -231,7 +234,10 @@ document.querySelector("[data-close-clock-picker]").addEventListener("click", cl
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     closePicker();
-    document.querySelectorAll(".inline-time-picker").forEach(picker => picker.hidden = true);
+    document.querySelectorAll(".inline-time-picker").forEach(picker => {
+      picker.hidden = true;
+      picker.closest(".clock-card").classList.remove("time-picker-open");
+    });
   }
 });
 updateWorldClocks();
