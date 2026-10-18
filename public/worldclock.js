@@ -49,13 +49,16 @@ function formatParts(date, zone) {
 
 function timeInputValue(date, zone) {
   const parts = formatParts(date, zone);
-  return [parts.hour % 24, parts.minute, parts.second].map(value => String(value).padStart(2, "0")).join(":");
+  const period = parts.hour >= 12 ? "PM" : "AM";
+  return `${String(parts.hour % 24).padStart(2, "0")}:${String(parts.minute).padStart(2, "0")}:${String(parts.second).padStart(2, "0")} ${period}`;
 }
 
 function setReferenceFromInput(value, zone) {
-  const parts = value.trim().split(":").map(Number);
-  if (parts.length < 2 || !parts.every(Number.isFinite)) return false;
-  const [hour, minute, second = 0] = parts;
+  const parts = value.trim().match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
+  if (!parts) return false;
+  const numericParts = parts.slice(1).map(Number);
+  if (!numericParts.every(Number.isFinite)) return false;
+  const [hour, minute, second = 0] = numericParts;
   if (hour > 23 || minute > 59 || second > 59) return false;
   const nowParts = formatParts(referenceTime, zone);
   const localAsUtc = Date.UTC(nowParts.year, nowParts.month - 1, nowParts.day, hour, minute, second);
@@ -92,10 +95,10 @@ function openPicker(index) {
 
 function openTimePicker(index) {
   timePickerCard = index;
-  const value = document.getElementById(`clockInput${index}`).value.split(":").map(Number);
-  selectedHour = value[0] || 0;
-  selectedMinute = value[1] || 0;
-  selectedSecond = value[2] || 0;
+  const value = document.getElementById(`clockInput${index}`).value.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?/);
+  selectedHour = value ? Number(value[1]) : 0;
+  selectedMinute = value ? Number(value[2]) : 0;
+  selectedSecond = value && value[3] ? Number(value[3]) : 0;
   document.querySelectorAll(".inline-time-picker").forEach(picker => picker.hidden = true);
   const card = document.querySelector(`.clock-card[data-clock-card="${index}"]`);
   let picker = card.querySelector(".inline-time-picker");
