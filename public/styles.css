@@ -10,23 +10,21 @@
 @media (min-width:721px) and (max-width:1100px){.hero{grid-template-columns:minmax(0,1fr) minmax(360px,547px);gap:24px}.hero h1{font-size:46px}.converter-card{padding:20px}.hero-actions{gap:8px}.hero-actions .button{padding:13px 14px;gap:12px}}
 @media (min-width:721px){.hero{grid-template-columns:minmax(240px,1fr) minmax(440px,547px);gap:24px}.hero>div{min-width:0}.converter-card{min-width:0}}
 @media (min-width:721px){.hero{min-height:390px}.hero h1{font-size:50px}.hero-copy{margin-bottom:22px}.converter-card{padding:18px}.converter-card .card-top{margin-bottom:16px}.converter-card .swap-line{height:42px}.converter-card .rate-chart{margin-top:12px;padding-top:10px}.converter-card .rate-chart svg{height:188px;margin-top:8px}.converter-card .chart-tooltip{top:82px}.converter-card .chart-details{margin-top:0}}
-.worldclock-grid-section .clock-grid{gap:18px}.worldclock-grid-section .clock-card{grid-template-columns:48px 1fr;gap:12px}.worldclock-grid-section .clock-face{width:48px;height:48px}.worldclock-grid-section .clock-hour{height:14px}.worldclock-grid-section .clock-minute{height:19px}.worldclock-grid-section .clock-second{height:21px}.worldclock-intro-grid{grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);gap:24px;margin-bottom:48px}.worldclock-intro-grid .world-globe{max-width:520px;width:100%}.worldclock-hero>p:last-child{font-size:13px;line-height:1.55}.clock-card{cursor:pointer}.clock-card:focus-within{outline:none}.clock-card select{pointer-events:none}.clock-time-input{display:block;width:100%;border:0;background:transparent;color:var(--ink);font:600 20px "Space Grotesk";padding:2px 0;outline:none}.clock-time-input:focus{box-shadow:0 2px 0 var(--blue)}.clock-picker[hidden]{display:none}.clock-picker{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px}.clock-picker-backdrop{position:absolute;inset:0;background:#14231f99}.clock-picker-dialog{position:relative;width:min(100%,420px);background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 20px 60px #14231f44}.clock-picker-dialog h2{font-size:32px;letter-spacing:-1.5px;margin-bottom:20px}.clock-picker-close{position:absolute;top:12px;right:16px;border:0;background:transparent;color:var(--muted);font:400 28px/1 "DM Sans";cursor:pointer}.clock-picker-search{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;background:white;font:14px "DM Sans";color:var(--ink);margin-bottom:10px}.clock-picker-list{max-height:300px;overflow:auto;display:grid;gap:4px}.clock-picker-list button{border:0;border-radius:7px;background:transparent;text-align:left;padding:10px;color:var(--ink);font:500 14px "DM Sans";cursor:pointer}.clock-picker-list button:hover{background:white}
+.worldclock-grid-section .clock-grid{gap:12px}.worldclock-grid-section .clock-card{grid-template-columns:40px 1fr;gap:9px}.worldclock-grid-section .clock-face{width:40px;height:40px}.worldclock-grid-section .clock-hour{height:12px}.worldclock-grid-section .clock-minute{height:16px}.worldclock-grid-section .clock-second{height:18px}.worldclock-grid-section .clock-time-input{font-size:17px}.worldclock-intro-grid{grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr);gap:24px;margin-bottom:48px}.worldclock-intro-grid .world-globe{max-width:520px;width:100%}.worldclock-hero>p:last-child{font-size:13px;line-height:1.55}.clock-card{cursor:pointer}.clock-card:focus-within{outline:none}.clock-card select{pointer-events:none}.clock-time-input{display:block;width:100%;border:0;background:transparent;color:var(--ink);font:600 20px "Space Grotesk";padding:2px 0;outline:none}.clock-time-input:focus{box-shadow:0 2px 0 var(--blue)}.clock-picker[hidden]{display:none}.clock-picker{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px}.clock-picker-backdrop{position:absolute;inset:0;background:#14231f99}.clock-picker-dialog{position:relative;width:min(100%,420px);background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 20px 60px #14231f44}.clock-picker-dialog h2{font-size:32px;letter-spacing:-1.5px;margin-bottom:20px}.clock-picker-close{position:absolute;top:12px;right:16px;border:0;background:transparent;color:var(--muted);font:400 28px/1 "DM Sans";cursor:pointer}.clock-picker-search{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;background:white;font:14px "DM Sans";color:var(--ink);margin-bottom:10px}.clock-picker-list{max-height:300px;overflow:auto;display:grid;gap:4px}.clock-picker-list button{border:0;border-radius:7px;background:transparent;text-align:left;padding:10px;color:var(--ink);font:500 14px "DM Sans";cursor:pointer}.clock-picker-list button:hover{background:white}
 .worldclock-page main{display:flex;flex-direction:column}.worldclock-page .worldclock-grid-section{order:-1}
 @media (max-width:720px){.worldclock-intro-grid{display:block;margin-bottom:48px}.worldclock-intro-grid .worldclock-hero{padding:36px 0 24px}.worldclock-intro-grid .globe-copy,.worldclock-intro-grid .globe-art{display:block}.worldclock-grid-section{margin-bottom:28px}.world-clocks-heading{display:block}.world-clocks-heading h2{margin-top:0}}
-@media (max-width:720px){.worldclock-page .nav nav{right:20px;left:auto;transform:none;gap:2px}.worldclock-page .nav nav a{padding:7px 9px;font-size:12px}.worldclock-page .world-clocks{padding:18px 14px 22px;border-radius:18px}.worldclock-page .world-clocks-heading h2{font-size:24px}.worldclock-page .clock-card{padding:11px 9px}}
+@media (max-width:720px){.worldclock-page .world-clocks{padding:18px 14px 22px;border-radius:18px}.worldclock-page .world-clocks-heading h2{font-size:24px}.worldclock-page .clock-card{padding:9px 7px}}
 @media (max-width:720px){.nav{height:auto;min-height:82px;flex-wrap:wrap;row-gap:14px;padding-top:16px;padding-bottom:16px}.site-nav{position:static;left:auto;top:auto;transform:none;margin-left:auto;gap:2px}.site-nav a{padding:7px 9px;font-size:12px}}
 @media (min-width:721px) and (max-width:900px){.worldclock-grid-section .clock-grid{grid-template-columns:repeat(2,1fr);gap:22px 18px}.worldclock-grid-section .clock-card{min-height:64px}}
 @media (min-width:721px) and (max-width:860px){.hero{grid-template-columns:1fr!important;gap:24px}.hero-copy{max-width:560px}.converter-card{width:100%}}
 .worldclock-page .nav{position:relative}
-.worldclock-page .nav nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:5px;border:1px solid #d5ded8;border-radius:999px;background:#fff;box-shadow:0 6px 18px #14231f12}
-.worldclock-page .nav nav a{padding:8px 14px;border-radius:999px;transition:background .2s ease,color .2s ease}
-.worldclock-page .nav nav a[aria-current="page"]{background:var(--ink);color:white}
-.worldclock-page .nav nav a:hover{background:var(--mint);color:var(--ink)}
 .nav{position:relative}
-.site-nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:10px;padding:5px;border:1px solid #d5ded8;border-radius:999px;background:#fff;box-shadow:0 6px 18px #14231f12;white-space:nowrap}
-.site-nav a{padding:8px 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;transition:background .2s ease,color .2s ease}
-.site-nav a[aria-current="page"]{background:var(--ink);color:white}
-.site-nav a:hover{background:var(--mint);color:var(--ink)}
+.site-nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;padding:5px;border:1px solid #d5ded8;border-radius:999px;background:#fff;box-shadow:0 6px 18px #14231f12;white-space:nowrap;transition:box-shadow .28s ease,border-color .28s ease}
+.site-nav:hover{border-color:#c5d4cb;box-shadow:0 9px 24px #14231f1c}
+.site-nav a{position:relative;padding:8px 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;transition:background .28s cubic-bezier(.22,1,.36,1),color .28s ease,transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease}
+.site-nav a[aria-current="page"]{background:var(--ink);color:white;box-shadow:0 4px 10px #14231f26}
+.site-nav a:hover{background:var(--mint);color:var(--ink);transform:translateY(-1px)}
+.site-nav a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .worldclock-page .world-clocks{position:relative;overflow:visible;border:1px solid #d5ded8;border-radius:22px;padding:24px 26px 28px;background:linear-gradient(135deg,#fbfcf9,#eef5ef);box-shadow:0 18px 42px #14231f14}
 .worldclock-page .world-clocks-heading{margin-bottom:22px}
 .worldclock-page .world-clocks-heading .eyebrow{color:var(--ink);opacity:.65}
@@ -42,6 +40,89 @@
 .converter-card .chart-details{display:inline-block;width:auto;margin:0;text-align:left}
 .converter-card .chart-status{display:inline-block;margin-left:12px}
 .clock-card label{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.8px}
+.worldclock-page{background:linear-gradient(180deg,#172522 0,#20332e 42%,#f0f4ef 100%);min-height:100vh}
+.worldclock-page .nav{background:transparent}
+.worldclock-page .brand{color:#f4faf5}
+.worldclock-page main{color:#edf6ef}
+.worldclock-page .globe-copy h2,.worldclock-page .globe-copy h3,.worldclock-page .section-intro h2{color:#f4faf5}
+.worldclock-page .globe-copy>p:not(.globe-note),.worldclock-page .section-intro>p:last-child{color:#c1d1c7}
+.worldclock-page .globe-note,.worldclock-page .globe-credit{color:#9fb5a8}
+.worldclock-page .globe-section{margin-bottom:70px}
+.worldclock-page footer{border-color:#49645a;color:#9fb5a8}
+.worldclock-page .reset-clock-button{border-color:#49645a;background:#294239;color:#f4faf5;box-shadow:0 6px 16px #07130f33}
+.worldclock-page .reset-clock-button:hover{background:#38574a}
+.worldclock-page .site-nav{border-color:#49645a;background:#294239;box-shadow:0 9px 24px #07130f55}
+.worldclock-page .site-nav:hover{border-color:#70917d}
+.worldclock-page .site-nav a{color:#bdd0c3}
+.worldclock-page .site-nav a[aria-current="page"]{background:#a7e6bc;color:#172922;box-shadow:0 4px 12px #07130f44}
+.worldclock-page .site-nav a:hover{background:#d0f5db;color:#172922}
+.worldclock-page .clock-picker-dialog{background:#20332e;border-color:#49645a}
+.worldclock-page .clock-picker-dialog h2{color:#f4faf5}
+.worldclock-page .clock-picker-search{background:#f7faf7;color:#172922;border-color:#789885}
+.worldclock-page .clock-picker-list button{color:#e4f0e7}
+.worldclock-page .clock-picker-list button:hover{background:#294239}
+.worldclock-page .worldclock-grid-section{margin:0 0 34px;padding:20px;border:1px solid #49645a;border-radius:22px;background:linear-gradient(145deg,#223b34,#182b27);box-shadow:0 20px 46px #07130f55}
+.worldclock-page .world-clocks-heading{margin-bottom:18px}
+.worldclock-page .world-clocks-heading .eyebrow{color:#a7e6bc;opacity:1}
+.worldclock-page .world-clocks-heading h2{color:#f4faf5}
+.worldclock-page .worldclock-grid-section .clock-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.worldclock-page .worldclock-grid-section .clock-card{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;min-width:0;padding:13px;background:#f7faf7;border:1px solid #d9e6dc;border-radius:14px;box-shadow:0 8px 18px #07130f26}
+.worldclock-page .worldclock-grid-section .clock-face{width:40px;height:40px;border-width:2px;background:#e9f5ed;border-color:#668f78}
+.worldclock-page .worldclock-grid-section .clock-location,.worldclock-page .worldclock-grid-section .clock-time-input{color:#172922}
+.worldclock-page .worldclock-intro-grid{margin-bottom:42px}
+.worldclock-page .worldclock-hero h1{color:#f4faf5}
+.worldclock-page .worldclock-hero>p:last-child{max-width:460px;margin:0;padding:14px 16px;border-left:3px solid #a7e6bc;border-radius:0 12px 12px 0;background:#0d1d1966;color:#e4f0e7;font-size:16px;line-height:1.65;text-shadow:none;box-shadow:0 8px 20px #07130f26}
+.worldclock-page .worldclock-intro-grid .globe-art{display:flex;justify-content:flex-end;align-items:flex-start;overflow:hidden}
+.worldclock-page .worldclock-intro-grid .world-globe{width:min(100%,460px);max-width:460px;margin:0;transform:translateX(18px)}
+@media (min-width:721px) and (max-width:900px){.worldclock-page .worldclock-grid-section .clock-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.worldclock-page .worldclock-grid-section{padding:16px}.worldclock-page .worldclock-grid-section .clock-grid{grid-template-columns:1fr;gap:10px}.worldclock-page .worldclock-grid-section .clock-card{grid-template-columns:40px minmax(0,1fr);padding:11px}.worldclock-page .worldclock-intro-grid{margin-bottom:30px}.worldclock-page .worldclock-intro-grid .globe-art{justify-content:center}.worldclock-page .worldclock-intro-grid .world-globe{width:100%;transform:none}.worldclock-page .worldclock-hero>p:last-child{font-size:15px;padding:12px 14px}}
+.currency-page{background:linear-gradient(145deg,#152923 0,#203a31 48%,#10201c 100%);min-height:100vh}
+.currency-page .nav{background:transparent}
+.currency-page .brand{color:#f4faf5}
+.currency-page .site-nav{border-color:#49645a;background:#294239;box-shadow:0 9px 24px #07130f55}
+.currency-page .site-nav:hover{border-color:#70917d}
+.currency-page .site-nav a{color:#bdd0c3}
+.currency-page .site-nav a[aria-current="page"]{background:#a7e6bc;color:#172922}
+.currency-page .site-nav a:hover{background:#d0f5db;color:#172922}
+.currency-page .eyebrow{color:#a7e6bc}
+.currency-page .hero h1,.currency-page h2,.currency-page .card h3{color:#f4faf5}
+.currency-page .hero-copy{color:#d0ded4;text-shadow:0 1px 1px #07130f99}
+.currency-page .converter-card{background:linear-gradient(145deg,#f7faf7,#e8f1eb);border-color:#6c8978;box-shadow:0 24px 52px #07130f66}
+.currency-page .card label{color:#557064}
+.currency-page .card input,.currency-page .card select,.currency-page .currency-select-button{background:#fff;border-color:#c5d8ca;color:#172922}
+.currency-page .swap-line{border-color:#bdd0c3;color:#557064}
+.currency-page .swap-line b,.currency-page .chart-heading strong{color:#172922}
+.currency-page .swap-line button{background:#d8f3df;border-color:#a9cbb2;color:#172922}
+.currency-page .rate-chart,.currency-page .fee-line{border-color:#c5d8ca}
+.currency-page .chart-ranges{background:#dcebe0;border-color:#c5d8ca}
+.currency-page .chart-range.active,.currency-page .chart-range:hover{background:#fff;color:#172922}
+.currency-page .stats{border-color:#49645a}
+.currency-page .stats div{border-color:#49645a}
+.currency-page .stats strong{color:#a7e6bc}
+.currency-page .stats span{color:#c1d1c7}
+.currency-page .seo-content,.currency-page .seo-use-cases,.currency-page .currency-coverage{color:#edf6ef}
+.currency-page .section-intro>p:last-child,.currency-page details p,.currency-page .use-case-list p,.currency-page .coverage-copy p{color:#d0ded4;text-shadow:0 1px 1px #07130f99}
+.currency-page .faq-list,.currency-page details,.currency-page .coverage-copy,.currency-page .use-case-list article{border-color:#49645a}
+.currency-page summary{color:#f4faf5}
+.currency-page footer{border-color:#49645a;color:#9fb5a8}
+.currency-page .support-button{background:#a7e6bc;color:#172922}
+.currency-page .support-button:hover{background:#d0f5db}
+.currency-page .currency-select-list{background:#f7faf7;border-color:#c5d8ca}
+.currency-page .currency-select-list button{background:#f7faf7;color:#172922}
+.currency-page .currency-select-list button:hover,.currency-page .currency-select-list button[aria-selected="true"]{background:#dcebe0}
+.currency-page .chart-tooltip{background:#172922;border-color:#49645a}
+.currency-page .currency-select-button{background:linear-gradient(135deg,#fff8d7 0%,#d9a92e 48%,#fff0a0 100%);border-color:#9d6b12;color:#432d08;box-shadow:inset 0 1px 0 #fffbdc,0 4px 12px #07130f1c;transition:border-color .24s ease,box-shadow .24s ease,transform .24s ease}
+.currency-page .currency-select-button:hover,.currency-page .currency-select-button[aria-expanded="true"]{border-color:#ffe27a;background:linear-gradient(135deg,#fffbe3 0%,#e8bd45 48%,#fff5b4 100%);box-shadow:inset 0 1px 0 #fffef0,0 6px 16px #07130f33;transform:translateY(-1px)}
+.currency-page .currency-select-list{background:linear-gradient(180deg,#fff8d7,#e5b83f 55%,#fff0a0);border:1px solid #9d6b12;box-shadow:0 18px 30px #07130f44;scrollbar-color:#9d6b12 #ead8a7;scrollbar-width:thin}
+.currency-page .currency-select-list::-webkit-scrollbar{width:10px}
+.currency-page .currency-select-list::-webkit-scrollbar-track{background:#ead8a7;border-radius:999px}
+.currency-page .currency-select-list::-webkit-scrollbar-thumb{background:linear-gradient(#ffe27a,#9d6b12,#f5d15d);border:2px solid #ead8a7;border-radius:999px}
+.currency-page .currency-select-list button{background:transparent;color:#5b4012;transition:background .18s ease,color .18s ease,padding-left .18s ease}
+.currency-page .currency-select-list button:hover,.currency-page .currency-select-list button[aria-selected="true"]{background:#e6bf5f;color:#3c2909;padding-left:16px}
+.currency-page .card input{background:linear-gradient(135deg,#fffdf3,#f5e7bb);border:1px solid #c99b3b;color:#432d08;font-size:18px;box-shadow:inset 0 1px 2px #9d6b1222,0 5px 14px #07130f14;transition:border-color .24s ease,box-shadow .24s ease,transform .24s ease}
+.currency-page .card input:focus{border-color:#9d6b12;outline:2px solid #e8bd4566;outline-offset:1px;box-shadow:inset 0 1px 2px #9d6b1233,0 7px 18px #07130f26;transform:translateY(-1px)}
+.currency-page .card input[readonly]{background:linear-gradient(135deg,#fffdf3,#f5e7bb);border-color:#c99b3b;color:#432d08;font-size:18px;letter-spacing:normal}
+.currency-page .card label{color:#f5d15d}
 .clock-location{display:block;width:100%;border:0;background:transparent;color:var(--ink);font:600 13px "Space Grotesk";padding:2px 0;text-align:left;cursor:pointer}
 .clock-location:hover{color:var(--blue)}
 .time-picker-dialog{width:min(100%,360px);text-align:center}
