@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>World Clock | k4currency</title>
-  <meta name="description" content="Check the local time in cities around the world with the k4currency world clock.">
+  <title>Time Converter | k4currency</title>
+  <meta name="description" content="Compare and synchronize local times in cities around the world with the k4currency time converter.">
   <link rel="canonical" href="https://k4currency.com/world-clock">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +14,24 @@
 <body class="worldclock-page">
   <header class="nav shell">
     <a class="brand" href="/"><span class="brand-mark">k4</span></a>
-    <nav class="site-nav" aria-label="Primary navigation"><a href="/world-clock" aria-current="page">World clock</a><a href="/">Currency converter</a></nav>
+    <nav class="site-nav" aria-label="Primary navigation"><a href="/world-clock" aria-current="page">Time converter</a><a href="/">Currency converter</a></nav>
   </header>
 
   <main class="shell">
+    <div class="worldclock-intro-grid">
+      <div class="worldclock-copy">
+        <button class="reset-clock-button" id="resetClockButton" type="button" hidden>Reset clock</button>
+        <section class="worldclock-hero" aria-labelledby="worldclock-heading">
+          <p class="eyebrow">TIME CONVERTER</p>
+          <h1 id="worldclock-heading">Local time,<br><em>everywhere.</em></h1>
+          <p>Choose a city by selecting any clock. Each clock shows the current local time, and entering a time in one clock instantly synchronizes the other three clocks to the same moment.</p>
+        </section>
+      </div>
+      <div class="globe-art">
+        <canvas id="worldGlobe" class="world-globe" width="640" height="420" role="img" aria-label="Interactive globe showing real country boundaries"></canvas>
+      </div>
+    </div>
+
     <section class="world-clocks worldclock-grid-section" aria-labelledby="clocks-heading">
       <div class="world-clocks-heading">
         <p class="eyebrow">TIME ZONES</p>
@@ -42,20 +56,6 @@
         </article>
       </div>
     </section>
-
-    <div class="worldclock-intro-grid">
-      <div class="worldclock-copy">
-        <button class="reset-clock-button" id="resetClockButton" type="button" hidden>Reset clock</button>
-        <section class="worldclock-hero" aria-labelledby="worldclock-heading">
-          <p class="eyebrow">WORLD CLOCK</p>
-          <h1 id="worldclock-heading">Local time,<br><em>everywhere.</em></h1>
-          <p>Choose a city by selecting any clock. Each clock shows the current local time, and entering a time in one clock instantly synchronizes the other three clocks to the same moment.</p>
-        </section>
-      </div>
-      <div class="globe-art">
-        <canvas id="worldGlobe" class="world-globe" width="640" height="420" role="img" aria-label="Interactive globe showing real country boundaries"></canvas>
-      </div>
-    </div>
 
   </main>
 
