@@ -15,6 +15,7 @@ function initGlobe() {
   let previousPoint;
   let angularVelocity = .008;
   let lastFrame = performance.now();
+  let electronPhase = 0;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const resize = () => {
     const ratio = window.devicePixelRatio || 1;
@@ -92,6 +93,37 @@ function initGlobe() {
     const centerX = width * .5;
     const centerY = height * .48;
     const radius = Math.min(width * .37, height * .43) * zoom;
+    const drawElectronOrbit = (angle, color, phase, frontOpacity) => {
+      const orbitX = radius * 1.34;
+      const orbitY = radius * .48;
+      context.save();
+      context.translate(centerX, centerY);
+      context.rotate(angle);
+      context.beginPath();
+      context.ellipse(0, 0, orbitX, orbitY, 0, 0, Math.PI * 2);
+      context.strokeStyle = color.replace("OPACITY", frontOpacity);
+      context.lineWidth = 1.15;
+      context.setLineDash([radius * .11, radius * .08]);
+      context.lineDashOffset = -phase * radius * .12;
+      context.shadowColor = color.replace("OPACITY", frontOpacity);
+      context.shadowBlur = 13;
+      context.stroke();
+      context.setLineDash([]);
+      for (let electronIndex = 0; electronIndex < 3; electronIndex += 1) {
+        const electronAngle = phase + electronIndex * Math.PI * 2 / 3;
+        const electronX = orbitX * Math.cos(electronAngle);
+        const electronY = orbitY * Math.sin(electronAngle);
+        context.beginPath();
+        context.arc(electronX, electronY, Math.max(2, radius * .022), 0, Math.PI * 2);
+        context.fillStyle = color.replace("OPACITY", ".72");
+        context.shadowColor = color.replace("OPACITY", ".72");
+        context.shadowBlur = 8;
+        context.fill();
+      }
+      context.restore();
+    };
+    drawElectronOrbit(-.58, "rgba(89, 235, 218, OPACITY)", electronPhase, ".12");
+    drawElectronOrbit(.58, "rgba(141, 111, 255, OPACITY)", -electronPhase * .82, ".1");
     const glow = context.createRadialGradient(centerX - radius * .35, centerY - radius * .45, radius * .05, centerX, centerY, radius * 1.25);
     glow.addColorStop(0, "#7a9fc1");
     glow.addColorStop(.55, "#326181");
@@ -137,12 +169,15 @@ function initGlobe() {
       }
     }
     context.putImageData(image, 0, 0);
+    drawElectronOrbit(-.58, "rgba(89, 235, 218, OPACITY)", electronPhase, ".5");
+    drawElectronOrbit(.58, "rgba(141, 111, 255, OPACITY)", -electronPhase * .82, ".42");
   };
   const animate = timestamp => {
     const elapsed = Math.min(50, timestamp - lastFrame);
     lastFrame = timestamp;
     if (!dragging && !reducedMotion) {
       rotation += angularVelocity * elapsed;
+      electronPhase = (electronPhase + elapsed * .00065) % (Math.PI * 2);
       angularVelocity += (.008 - angularVelocity) * Math.min(1, elapsed / 1200);
       draw();
     }
