@@ -1,3 +1,9 @@
+const liveCurrencyCodes = new Set([
+  "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", "GBP",
+  "HKD", "HUF", "IDR", "ILS", "INR", "ISK", "JPY", "KRW", "MXN", "MYR",
+  "NOK", "NZD", "PHP", "PLN", "RON", "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
+]);
+
 const currencies = [
   { country: "Australia", code: "AUD" },
   { country: "Brazil", code: "BRL" },
@@ -49,7 +55,127 @@ const currencies = [
   ,{ country: "United Arab Emirates", code: "AED" }
   ,{ country: "Uruguay", code: "UYU" }
   ,{ country: "Vietnam", code: "VND" }
-];
+  ,{ country: "Afghanistan", code: "AFN" }
+  ,{ country: "Albania", code: "ALL" }
+  ,{ country: "Algeria", code: "DZD" }
+  ,{ country: "Armenia", code: "AMD" }
+  ,{ country: "Aruba", code: "AWG" }
+  ,{ country: "Azerbaijan", code: "AZN" }
+  ,{ country: "Bahamas", code: "BSD" }
+  ,{ country: "Bahrain", code: "BHD" }
+  ,{ country: "Bangladesh", code: "BDT" }
+  ,{ country: "Barbados", code: "BBD" }
+  ,{ country: "Belarus", code: "BYN" }
+  ,{ country: "Belize", code: "BZD" }
+  ,{ country: "Bermuda", code: "BMD" }
+  ,{ country: "Bhutan", code: "BTN" }
+  ,{ country: "Bolivia", code: "BOB" }
+  ,{ country: "Bosnia and Herzegovina", code: "BAM" }
+  ,{ country: "Botswana", code: "BWP" }
+  ,{ country: "Brunei", code: "BND" }
+  ,{ country: "Burundi", code: "BIF" }
+  ,{ country: "Cambodia", code: "KHR" }
+  ,{ country: "Cape Verde", code: "CVE" }
+  ,{ country: "Cayman Islands", code: "KYD" }
+  ,{ country: "Central African CFA franc", code: "XAF" }
+  ,{ country: "Comoros", code: "KMF" }
+  ,{ country: "Costa Rica", code: "CRC" }
+  ,{ country: "Croatia", code: "EUR" }
+  ,{ country: "Cuba", code: "CUP" }
+  ,{ country: "Curaçao", code: "ANG" }
+  ,{ country: "Djibouti", code: "DJF" }
+  ,{ country: "Dominican Republic", code: "DOP" }
+  ,{ country: "East Caribbean", code: "XCD" }
+  ,{ country: "Eritrea", code: "ERN" }
+  ,{ country: "Eswatini", code: "SZL" }
+  ,{ country: "Ethiopia", code: "ETB" }
+  ,{ country: "Fiji", code: "FJD" }
+  ,{ country: "Gambia", code: "GMD" }
+  ,{ country: "Georgia", code: "GEL" }
+  ,{ country: "Ghana", code: "GHS" }
+  ,{ country: "Guatemala", code: "GTQ" }
+  ,{ country: "Guinea", code: "GNF" }
+  ,{ country: "Guyana", code: "GYD" }
+  ,{ country: "Haiti", code: "HTG" }
+  ,{ country: "Honduras", code: "HNL" }
+  ,{ country: "Iran", code: "IRR" }
+  ,{ country: "Jersey", code: "JEP" }
+  ,{ country: "Kazakhstan", code: "KZT" }
+  ,{ country: "Kyrgyzstan", code: "KGS" }
+  ,{ country: "Laos", code: "LAK" }
+  ,{ country: "Lebanon", code: "LBP" }
+  ,{ country: "Lesotho", code: "LSL" }
+  ,{ country: "Liberia", code: "LRD" }
+  ,{ country: "Libya", code: "LYD" }
+  ,{ country: "Macau", code: "MOP" }
+  ,{ country: "Madagascar", code: "MGA" }
+  ,{ country: "Malawi", code: "MWK" }
+  ,{ country: "Maldives", code: "MVR" }
+  ,{ country: "Mauritania", code: "MRU" }
+  ,{ country: "Mauritius", code: "MUR" }
+  ,{ country: "Moldova", code: "MDL" }
+  ,{ country: "Mongolia", code: "MNT" }
+  ,{ country: "Montenegro", code: "EUR" }
+  ,{ country: "Mozambique", code: "MZN" }
+  ,{ country: "Myanmar", code: "MMK" }
+  ,{ country: "Namibia", code: "NAD" }
+  ,{ country: "Nepal", code: "NPR" }
+  ,{ country: "Nicaragua", code: "NIO" }
+  ,{ country: "North Macedonia", code: "MKD" }
+  ,{ country: "North Korea", code: "KPW" }
+  ,{ country: "Panama", code: "PAB" }
+  ,{ country: "Papua New Guinea", code: "PGK" }
+  ,{ country: "Paraguay", code: "PYG" }
+  ,{ country: "Rwanda", code: "RWF" }
+  ,{ country: "Samoa", code: "WST" }
+  ,{ country: "São Tomé and Príncipe", code: "STN" }
+  ,{ country: "Serbia", code: "RSD" }
+  ,{ country: "Seychelles", code: "SCR" }
+  ,{ country: "Sierra Leone", code: "SLE" }
+  ,{ country: "Solomon Islands", code: "SBD" }
+  ,{ country: "Somalia", code: "SOS" }
+  ,{ country: "Sri Lanka", code: "LKR" }
+  ,{ country: "Sudan", code: "SDG" }
+  ,{ country: "Suriname", code: "SRD" }
+  ,{ country: "Syria", code: "SYP" }
+  ,{ country: "Taiwan", code: "TWD" }
+  ,{ country: "Tajikistan", code: "TJS" }
+  ,{ country: "Tanzania", code: "TZS" }
+  ,{ country: "Tonga", code: "TOP" }
+  ,{ country: "Trinidad and Tobago", code: "TTD" }
+  ,{ country: "Tunisia", code: "TND" }
+  ,{ country: "Turkmenistan", code: "TMT" }
+  ,{ country: "Uganda", code: "UGX" }
+  ,{ country: "Ukraine", code: "UAH" }
+  ,{ country: "Uzbekistan", code: "UZS" }
+  ,{ country: "Vanuatu", code: "VUV" }
+  ,{ country: "Venezuela", code: "VES" }
+  ,{ country: "Yemen", code: "YER" }
+  ,{ country: "Zambia", code: "ZMW" }
+  ,{ country: "Zimbabwe", code: "ZWL" }
+  ,{ country: "Bolivian Mvdol", code: "BOV" }
+  ,{ country: "CFA franc BCEAO", code: "XOF" }
+  ,{ country: "CFP franc", code: "XPF" }
+  ,{ country: "Chilean unidad de fomento", code: "CLF" }
+  ,{ country: "Colombian unidad de valor real", code: "COU" }
+  ,{ country: "European unit of account (XBA)", code: "XBA" }
+  ,{ country: "European unit of account (XBB)", code: "XBB" }
+  ,{ country: "European unit of account (XBC)", code: "XBC" }
+  ,{ country: "European unit of account (XBD)", code: "XBD" }
+  ,{ country: "Gold", code: "XAU" }
+  ,{ country: "International monetary fund", code: "XDR" }
+  ,{ country: "Mexican unidad de inversión", code: "MXV" }
+  ,{ country: "Platinum", code: "XPT" }
+  ,{ country: "Palladium", code: "XPD" }
+  ,{ country: "Sucre", code: "XSU" }
+  ,{ country: "Testing currency code", code: "XTS" }
+  ,{ country: "Uruguay peso en unidades indexadas", code: "UYI" }
+  ,{ country: "Uruguay unidad previsional", code: "UYW" }
+  ,{ country: "US dollar (next day)", code: "USN" }
+  ,{ country: "ADB unit of account", code: "XUA" }
+  ,{ country: "No currency", code: "XXX" }
+].filter(({ code }) => liveCurrencyCodes.has(code))
+  .filter((currency, index, list) => list.findIndex(item => item.code === currency.code) === index);
 currencies.sort((a, b) => a.country.localeCompare(b.country));
 const countryCurrencies = {
   CA: "CAD", US: "USD", GB: "GBP", AU: "AUD",
@@ -112,6 +238,8 @@ function fillSelect(select, selected) {
       option.setAttribute("aria-selected", String(option.dataset.value === select.value));
     });
   };
+  let typeahead = "";
+  let typeaheadTimer;
 
   currencies.forEach(({ country, code }) => {
     const option = document.createElement("button");
@@ -134,6 +262,25 @@ function fillSelect(select, selected) {
     list.hidden = !list.hidden;
     button.setAttribute("aria-expanded", String(!list.hidden));
   });
+  button.addEventListener("keydown", event => {
+    if (event.key.length !== 1 || !/[a-z0-9]/i.test(event.key)) return;
+    event.preventDefault();
+    typeahead += event.key.toLowerCase();
+    window.clearTimeout(typeaheadTimer);
+    typeaheadTimer = window.setTimeout(() => { typeahead = ""; }, 700);
+    const query = typeahead.toLowerCase();
+    const match = currencies.find(({ code, country }) =>
+      code.toLowerCase().startsWith(query) || country.toLowerCase().startsWith(query)
+    );
+    if (!match) return;
+    select.value = match.code;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    updateButton();
+    list.hidden = false;
+    button.setAttribute("aria-expanded", "true");
+    const option = list.querySelector(`[data-value="${match.code}"]`);
+    option?.scrollIntoView({ block: "nearest" });
+  });
   currencySelects.push({ wrapper, list, button, select, updateButton });
   select.hidden = true;
   list.hidden = true;
@@ -146,18 +293,25 @@ function getDefaultCurrency() {
 }
 
 function convert(amount, from, to) {
-  const result = Number(amount || 0) * (rates[to] || 0);
+  if (!Number.isFinite(rates[to])) return "";
+  const result = Number(amount || 0) * rates[to];
   return result.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function updateConverter() {
   const from = $("convertFrom").value;
   const to = $("convertTo").value;
-  $("convertResult").value = convert($("convertAmount").value, from, to);
-  $("rate").textContent = (rates[to] || 0).toFixed(4);
+  const supported = Number.isFinite(rates[to]);
+  $("convertResult").value = supported ? convert($("convertAmount").value, from, to) : "Unavailable";
+  $("rate").textContent = supported ? rates[to].toFixed(4) : "Unavailable";
   $("fromCode").textContent = from;
   $("toCode").textContent = to;
-  $("chartRate").textContent = rates[to] ? `${rates[to].toFixed(4)} ${to}` : "Loading…";
+  $("chartRate").textContent = supported ? `${rates[to].toFixed(4)} ${to}` : "Live rate unavailable";
+  if (!supported) {
+    chartPoints = [];
+    $("rateChart").innerHTML = "";
+    $("chartStatus").textContent = "Live provider coverage is unavailable for this currency pair.";
+  }
   renderChart();
   track("converter_updated", { from_currency: from, to_currency: to });
 }
@@ -261,9 +415,14 @@ async function loadChart(base, quote) {
 }
 
 async function loadRates(base) {
+  rates = {};
+  updateConverter();
   const response = await fetch(`/api/rates?base=${encodeURIComponent(base)}`);
   const result = await response.json();
-  if (!response.ok) throw new Error(result.error || "Live rates unavailable");
+  if (!response.ok) {
+    $("chartStatus").textContent = result.error || "Live rates unavailable for this base currency.";
+    throw new Error(result.error || "Live rates unavailable");
+  }
   rates = { [base]: 1, ...result.rates };
   ratesUpdatedAt = result.updatedAt;
   updateConverter();

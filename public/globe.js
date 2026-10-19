@@ -5,6 +5,9 @@ function initGlobe() {
   if (!canvas) return;
   const context = canvas.getContext("2d");
   let features = [];
+  let landTexture;
+  let landTextureWidth = 1440;
+  let landTextureHeight = 720;
   let rotation = -20;
   let tilt = 8;
   let zoom = 1;
@@ -27,8 +30,9 @@ function initGlobe() {
     const tiltRadians = tilt * Math.PI / 180;
     const x = Math.cos(lat) * Math.sin(lon);
     const y = Math.cos(tiltRadians) * Math.sin(lat) - Math.sin(tiltRadians) * Math.cos(lat) * Math.cos(lon);
-    const visible = Math.cos(lat) * Math.cos(lon) > -0.04;
-    return { x: centerX + radius * x, y: centerY - radius * y, visible };
+    const depth = Math.cos(tiltRadians) * Math.cos(lat) * Math.cos(lon) + Math.sin(tiltRadians) * Math.sin(lat);
+    const visible = depth > -0.015;
+    return { x: centerX + radius * x, y: centerY - radius * y, visible, depth };
   };
   const isInsideGlobe = event => {
     const bounds = canvas.getBoundingClientRect();
@@ -39,64 +43,51 @@ function initGlobe() {
     const y = event.clientY - bounds.top - height * .48;
     return x * x + y * y <= radius * radius;
   };
-  const drawPolygon = (coordinates, centerX, centerY, radius, fill) => {
-    coordinates.forEach(ring => {
-      let segment = [];
-      const addPoint = point => {
-        if (!segment.length || Math.hypot(point.x - segment[segment.length - 1].x, point.y - segment[segment.length - 1].y) > .25) {
-          segment.push(point);
-        }
-      };
-      const horizonPoint = (start, end) => {
-        let low = 0;
-        let high = 1;
-        for (let step = 0; step < 8; step += 1) {
-          const middle = (low + high) / 2;
-          const longitude = start[0] + (end[0] - start[0]) * middle;
-          const latitude = start[1] + (end[1] - start[1]) * middle;
-          if (project(longitude, latitude, centerX, centerY, radius).visible === project(start[0], start[1], centerX, centerY, radius).visible) low = middle;
-          else high = middle;
-        }
-        const longitude = start[0] + (end[0] - start[0]) * ((low + high) / 2);
-        const latitude = start[1] + (end[1] - start[1]) * ((low + high) / 2);
-        return project(longitude, latitude, centerX, centerY, radius);
-      };
-      const paintSegment = () => {
-        if (segment.length < 3) {
-          segment = [];
-          return;
-        }
-        context.beginPath();
-        context.moveTo(segment[0].x, segment[0].y);
-        segment.slice(1).forEach(point => context.lineTo(point.x, point.y));
-        context.closePath();
-        context.fillStyle = fill;
-        context.fill();
-        context.strokeStyle = "rgba(220, 250, 231, .48)";
-        context.lineWidth = .55;
-        context.stroke();
-        segment = [];
-      };
-      ring.forEach((coordinate, index) => {
-        const previous = ring[index === 0 ? ring.length - 1 : index - 1];
-        const previousPoint = project(previous[0], previous[1], centerX, centerY, radius);
-        const point = project(coordinate[0], coordinate[1], centerX, centerY, radius);
-        if (point.visible && previousPoint.visible) {
-          addPoint(point);
-        } else if (point.visible !== previousPoint.visible) {
-          addPoint(horizonPoint(previous, coordinate));
-          if (point.visible) addPoint(point);
-          else paintSegment();
-        } else if (!point.visible) {
-          paintSegment();
-        }
-      });
-      paintSegment();
+  const buildLandTexture = () => {
+    const map = document.createElement("canvas");
+    map.width = landTextureWidth;
+    map.height = landTextureHeight;
+    const mapContext = map.getContext("2d");
+    mapContext.fillStyle = "#a7d7bf";
+    features.forEach(feature => {
+      const geometries = feature.geometry.type === "Polygon" ? [feature.geometry.coordinates] : feature.geometry.coordinates;
+      geometries.forEach(polygon => polygon.forEach(ring => {
+        mapContext.beginPath();
+        ring.forEach(([longitude, latitude], index) => {
+          const x = (longitude + 180) / 360 * map.width;
+          const y = (90 - latitude) / 180 * map.height;
+          if (index === 0) mapContext.moveTo(x, y);
+          else mapContext.lineTo(x, y);
+        });
+        mapContext.closePath();
+        mapContext.fill("evenodd");
+      }));
     });
+    landTexture = mapContext.getImageData(0, 0, map.width, map.height).data;
+  };
+  const sampleLand = (textureX, textureY) => {
+    if (!landTexture) return 0;
+    const x = ((textureX % landTextureWidth) + landTextureWidth) % landTextureWidth;
+    const y = Math.max(0, Math.min(landTextureHeight - 1, textureY));
+    const centerX = Math.floor(x);
+    const centerY = Math.floor(y);
+    let total = 0;
+    for (let offsetY = -1; offsetY <= 1; offsetY += 1) {
+      const sampleY = Math.max(0, Math.min(landTextureHeight - 1, centerY + offsetY));
+      for (let offsetX = -1; offsetX <= 1; offsetX += 1) {
+        const sampleX = (centerX + offsetX + landTextureWidth) % landTextureWidth;
+        total += landTexture[(sampleY * landTextureWidth + sampleX) * 4 + 3] / 255;
+      }
+    }
+    const average = total / 9;
+    if (average < .28) return 0;
+    const edge = Math.max(0, Math.min(1, (average - .28) / .5));
+    return edge * edge * (3 - 2 * edge);
   };
   const draw = () => {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
+    const ratio = window.devicePixelRatio || 1;
     context.clearRect(0, 0, width, height);
     const centerX = width * .5;
     const centerY = height * .48;
@@ -114,48 +105,38 @@ function initGlobe() {
     context.fillStyle = glow;
     context.fill();
     context.restore();
-    context.save();
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.clip();
-    context.strokeStyle = "rgba(190, 225, 238, .2)";
-    context.lineWidth = .6;
-    for (let longitude = -150; longitude <= 180; longitude += 30) {
-      context.beginPath();
-      let started = false;
-      for (let latitude = -90; latitude <= 90; latitude += 4) {
-        const point = project(longitude, latitude, centerX, centerY, radius);
-        if (point.visible) {
-          if (!started) context.moveTo(point.x, point.y);
-          else context.lineTo(point.x, point.y);
-          started = true;
-        }
+    const image = context.createImageData(Math.ceil(width * ratio), Math.ceil(height * ratio));
+    const tiltRadians = tilt * Math.PI / 180;
+    for (let y = 0; y < image.height; y += 1) {
+      for (let x = 0; x < image.width; x += 1) {
+        const pixelX = (x + .5) / ratio;
+        const pixelY = (y + .5) / ratio;
+        const nx = (pixelX - centerX) / radius;
+        const ny = (centerY - pixelY) / radius;
+        const distance = nx * nx + ny * ny;
+        if (distance > 1) continue;
+        const nz = Math.sqrt(1 - distance);
+        const mapY = Math.cos(tiltRadians) * ny + Math.sin(tiltRadians) * nz;
+        const mapZ = Math.cos(tiltRadians) * nz - Math.sin(tiltRadians) * ny;
+        const longitude = Math.atan2(nx, mapZ) * 180 / Math.PI - rotation;
+        const latitude = Math.asin(Math.max(-1, Math.min(1, mapY))) * 180 / Math.PI;
+        const textureX = ((longitude + 180 + 360) % 360) / 360 * landTextureWidth;
+        const textureY = (90 - latitude) / 180 * (landTextureHeight - 1);
+        const light = Math.max(.24, .72 + mapY * .12 + nz * .18);
+        const landAmount = sampleLand(textureX, textureY);
+        const source = [
+          24 + (132 - 24) * landAmount,
+          73 + (185 - 73) * landAmount,
+          105 + (158 - 105) * landAmount
+        ];
+        const index = (y * image.width + x) * 4;
+        image.data[index] = source[0] * light;
+        image.data[index + 1] = source[1] * light;
+        image.data[index + 2] = source[2] * light;
+        image.data[index + 3] = 255;
       }
-      context.stroke();
     }
-    for (let latitude = -60; latitude <= 60; latitude += 30) {
-      context.beginPath();
-      let started = false;
-      for (let longitude = -180; longitude <= 180; longitude += 4) {
-        const point = project(longitude, latitude, centerX, centerY, radius);
-        if (point.visible) {
-          if (!started) context.moveTo(point.x, point.y);
-          else context.lineTo(point.x, point.y);
-          started = true;
-        }
-      }
-      context.stroke();
-    }
-    features.forEach(feature => {
-      const geometries = feature.geometry.type === "Polygon" ? [feature.geometry.coordinates] : feature.geometry.coordinates;
-      geometries.forEach(polygon => drawPolygon(polygon, centerX, centerY, radius, "#a7d7bf"));
-    });
-    context.restore();
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.strokeStyle = "rgba(201, 236, 246, .78)";
-    context.lineWidth = 1.3;
-    context.stroke();
+    context.putImageData(image, 0, 0);
   };
   const animate = timestamp => {
     const elapsed = Math.min(50, timestamp - lastFrame);
@@ -203,6 +184,7 @@ function initGlobe() {
     })
     .then(data => {
       features = data.features || [];
+      buildLandTexture();
       resize();
     })
     .catch(error => {

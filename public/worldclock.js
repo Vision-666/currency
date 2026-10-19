@@ -18,7 +18,38 @@ const clockLocations = [
   ["Sweden", "Stockholm", "Europe/Stockholm"], ["Switzerland", "Zurich", "Europe/Zurich"], ["Thailand", "Bangkok", "Asia/Bangkok"],
   ["Türkiye", "Istanbul", "Europe/Istanbul"], ["United Arab Emirates", "Dubai", "Asia/Dubai"], ["United Kingdom", "London", "Europe/London"],
   ["United States", "Anchorage", "America/Anchorage"], ["United States", "Chicago", "America/Chicago"], ["United States", "Denver", "America/Denver"],
-  ["United States", "Honolulu", "Pacific/Honolulu"], ["United States", "Los Angeles", "America/Los_Angeles"], ["United States", "New York", "America/New_York"]
+  ["United States", "Honolulu", "Pacific/Honolulu"], ["United States", "Los Angeles", "America/Los_Angeles"], ["United States", "New York", "America/New_York"],
+  ["Afghanistan", "Kabul", "Asia/Kabul"], ["Albania", "Tirana", "Europe/Tirane"], ["Algeria", "Algiers", "Africa/Algiers"],
+  ["Angola", "Luanda", "Africa/Luanda"], ["Antigua and Barbuda", "St. John's", "America/Antigua"], ["Armenia", "Yerevan", "Asia/Yerevan"],
+  ["Azerbaijan", "Baku", "Asia/Baku"], ["Bahamas", "Nassau", "America/Nassau"], ["Bahrain", "Manama", "Asia/Bahrain"],
+  ["Barbados", "Bridgetown", "America/Barbados"], ["Belarus", "Minsk", "Europe/Minsk"], ["Belgium", "Brussels", "Europe/Brussels"],
+  ["Belize", "Belmopan", "America/Belize"], ["Benin", "Porto-Novo", "Africa/Porto-Novo"], ["Bolivia", "La Paz", "America/La_Paz"],
+  ["Bosnia and Herzegovina", "Sarajevo", "Europe/Sarajevo"], ["Botswana", "Gaborone", "Africa/Gaborone"], ["Brunei", "Bandar Seri Begawan", "Asia/Brunei"],
+  ["Burkina Faso", "Ouagadougou", "Africa/Ouagadougou"], ["Cameroon", "Yaounde", "Africa/Douala"], ["Chad", "N'Djamena", "Africa/Ndjamena"],
+  ["Costa Rica", "San José", "America/Costa_Rica"], ["Croatia", "Zagreb", "Europe/Zagreb"], ["Cuba", "Havana", "America/Havana"],
+  ["Cyprus", "Nicosia", "Asia/Nicosia"], ["Ecuador", "Quito", "America/Guayaquil"], ["El Salvador", "San Salvador", "America/El_Salvador"],
+  ["Estonia", "Tallinn", "Europe/Tallinn"], ["Ethiopia", "Addis Ababa", "Africa/Addis_Ababa"], ["Fiji", "Suva", "Pacific/Fiji"],
+  ["Gabon", "Libreville", "Africa/Libreville"], ["Georgia", "Tbilisi", "Asia/Tbilisi"], ["Ghana", "Accra", "Africa/Accra"],
+  ["Guatemala", "Guatemala City", "America/Guatemala"], ["Guinea", "Conakry", "Africa/Conakry"], ["Guyana", "Georgetown", "America/Guyana"],
+  ["Haiti", "Port-au-Prince", "America/Port-au-Prince"], ["Honduras", "Tegucigalpa", "America/Tegucigalpa"], ["Iran", "Tehran", "Asia/Tehran"],
+  ["Iraq", "Baghdad", "Asia/Baghdad"], ["Jamaica", "Kingston", "America/Jamaica"], ["Jordan", "Amman", "Asia/Amman"],
+  ["Kazakhstan", "Almaty", "Asia/Almaty"], ["Kuwait", "Kuwait City", "Asia/Kuwait"], ["Laos", "Vientiane", "Asia/Vientiane"],
+  ["Latvia", "Riga", "Europe/Riga"], ["Lebanon", "Beirut", "Asia/Beirut"], ["Liberia", "Monrovia", "Africa/Monrovia"],
+  ["Libya", "Tripoli", "Africa/Tripoli"], ["Lithuania", "Vilnius", "Europe/Vilnius"], ["Luxembourg", "Luxembourg", "Europe/Luxembourg"],
+  ["Madagascar", "Antananarivo", "Indian/Antananarivo"], ["Malawi", "Lilongwe", "Africa/Blantyre"], ["Maldives", "Malé", "Indian/Maldives"],
+  ["Mali", "Bamako", "Africa/Bamako"], ["Malta", "Valletta", "Europe/Malta"], ["Mauritius", "Port Louis", "Indian/Mauritius"],
+  ["Mongolia", "Ulaanbaatar", "Asia/Ulaanbaatar"], ["Montenegro", "Podgorica", "Europe/Podgorica"], ["Namibia", "Windhoek", "Africa/Windhoek"],
+  ["Nepal", "Kathmandu", "Asia/Kathmandu"], ["Nicaragua", "Managua", "America/Managua"], ["Niger", "Niamey", "Africa/Niamey"],
+  ["North Macedonia", "Skopje", "Europe/Skopje"], ["Panama", "Panama City", "America/Panama"], ["Paraguay", "Asunción", "America/Asuncion"],
+  ["Rwanda", "Kigali", "Africa/Kigali"], ["Senegal", "Dakar", "Africa/Dakar"], ["Serbia", "Belgrade", "Europe/Belgrade"],
+  ["Sierra Leone", "Freetown", "Africa/Freetown"], ["Slovakia", "Bratislava", "Europe/Bratislava"], ["Slovenia", "Ljubljana", "Europe/Ljubljana"],
+  ["Somalia", "Mogadishu", "Africa/Mogadishu"], ["Sri Lanka", "Colombo", "Asia/Colombo"], ["Sudan", "Khartoum", "Africa/Khartoum"],
+  ["Suriname", "Paramaribo", "America/Paramaribo"], ["Syria", "Damascus", "Asia/Damascus"], ["Taiwan", "Taipei", "Asia/Taipei"],
+  ["Tajikistan", "Dushanbe", "Asia/Dushanbe"], ["Tanzania", "Dar es Salaam", "Africa/Dar_es_Salaam"], ["Togo", "Lomé", "Africa/Lome"],
+  ["Trinidad and Tobago", "Port of Spain", "America/Port_of_Spain"], ["Tunisia", "Tunis", "Africa/Tunis"], ["Turkmenistan", "Ashgabat", "Asia/Ashgabat"],
+  ["Uganda", "Kampala", "Africa/Kampala"], ["Ukraine", "Kyiv", "Europe/Kyiv"], ["Uruguay", "Montevideo", "America/Montevideo"],
+  ["Uzbekistan", "Tashkent", "Asia/Tashkent"], ["Venezuela", "Caracas", "America/Caracas"], ["Yemen", "Sana'a", "Asia/Aden"],
+  ["Zambia", "Lusaka", "Africa/Lusaka"], ["Zimbabwe", "Harare", "Africa/Harare"]
 ].map(([country, city, zone]) => ({ country, city, zone, name: city }))
   .sort((a, b) => a.country.localeCompare(b.country) || a.city.localeCompare(b.city));
 
@@ -169,7 +200,8 @@ function renderPickerList() {
   const query = document.getElementById("clockPickerSearch").value.toLowerCase();
   const list = document.getElementById("clockPickerList");
   list.innerHTML = "";
-  clockLocations.filter(location => `${location.country} ${location.city}`.toLowerCase().includes(query)).forEach(location => {
+  const matches = clockLocations.filter(location => `${location.country} ${location.city}`.toLowerCase().includes(query));
+  matches.forEach(location => {
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = `${location.country} — ${location.city}`;
@@ -180,6 +212,8 @@ function renderPickerList() {
     });
     list.append(button);
   });
+  const firstMatch = list.querySelector("button");
+  if (firstMatch) firstMatch.scrollIntoView({ block: "nearest" });
 }
 
 function setHeading(text) {
@@ -232,6 +266,13 @@ document.getElementById("resetClockButton").addEventListener("click", () => {
   updateWorldClocks();
 });
 document.getElementById("clockPickerSearch").addEventListener("input", renderPickerList);
+document.getElementById("clockPickerSearch").addEventListener("keydown", event => {
+  if (event.key !== "Enter") return;
+  const firstMatch = document.querySelector("#clockPickerList button");
+  if (!firstMatch) return;
+  event.preventDefault();
+  firstMatch.click();
+});
 document.getElementById("closeClockPicker").addEventListener("click", closePicker);
 document.querySelector("[data-close-clock-picker]").addEventListener("click", closePicker);
 document.addEventListener("keydown", event => {

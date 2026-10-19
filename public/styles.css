@@ -76,8 +76,15 @@
 .worldclock-page .worldclock-hero>p:last-child{max-width:460px;margin:0;padding:14px 16px;border-left:3px solid #a7e6bc;border-radius:0 12px 12px 0;background:#0d1d1966;color:#e4f0e7;font-size:16px;line-height:1.65;text-shadow:none;box-shadow:0 8px 20px #07130f26}
 .worldclock-page .worldclock-intro-grid .globe-art{display:flex;justify-content:flex-end;align-items:flex-start;overflow:hidden}
 .worldclock-page .worldclock-intro-grid .world-globe{width:min(100%,460px);max-width:460px;margin:0;transform:translateX(18px)}
+.currency-page .hero{align-items:start;padding-top:48px}
+.currency-page .hero>div:first-child{padding-top:34px}
+.currency-page .stats{min-height:104px;text-align:center}
+.currency-page .stats div{display:flex;min-height:52px;flex-direction:column;justify-content:center}
+.worldclock-page .worldclock-intro-grid{align-items:center}
+.worldclock-page .worldclock-copy{min-width:0}
+.worldclock-page .worldclock-grid-section{clear:both}
 @media (min-width:721px) and (max-width:900px){.worldclock-page .worldclock-grid-section .clock-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:720px){.worldclock-page .worldclock-grid-section{padding:16px}.worldclock-page .worldclock-grid-section .clock-grid{grid-template-columns:1fr;gap:10px}.worldclock-page .worldclock-grid-section .clock-card{grid-template-columns:40px minmax(0,1fr);padding:11px}.worldclock-page .worldclock-intro-grid{margin-bottom:30px}.worldclock-page .worldclock-intro-grid .globe-art{justify-content:center}.worldclock-page .worldclock-intro-grid .world-globe{width:100%;transform:none}.worldclock-page .worldclock-hero>p:last-child{font-size:15px;padding:12px 14px}}
+@media (max-width:720px){.currency-page .hero{padding-top:24px}.currency-page .hero>div:first-child{padding-top:0}.currency-page .stats{min-height:0}.currency-page .stats div{min-height:60px}.worldclock-page .worldclock-grid-section{padding:16px}.worldclock-page .worldclock-grid-section .clock-grid{grid-template-columns:1fr;gap:10px}.worldclock-page .worldclock-grid-section .clock-card{grid-template-columns:40px minmax(0,1fr);padding:11px}.worldclock-page .worldclock-intro-grid{margin-bottom:30px}.worldclock-page .worldclock-intro-grid .globe-art{justify-content:center}.worldclock-page .worldclock-intro-grid .world-globe{width:100%;transform:none}.worldclock-page .worldclock-hero>p:last-child{font-size:15px;padding:12px 14px}}
 .currency-page{background:linear-gradient(145deg,#152923 0,#203a31 48%,#10201c 100%);min-height:100vh}
 .currency-page .nav{background:transparent}
 .currency-page .brand{color:#f4faf5}
