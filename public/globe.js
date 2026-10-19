@@ -16,7 +16,13 @@ function initGlobe() {
   let angularVelocity = .008;
   let lastFrame = performance.now();
   let electronPhase = 0;
+  const electronBaseSpeed = .00065;
+  const electronRotationInfluence = 1.4;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const getElectronSpeed = () => Math.max(
+    -.025,
+    Math.min(.025, electronBaseSpeed + angularVelocity * Math.PI / 180 * electronRotationInfluence)
+  );
   const resize = () => {
     const ratio = window.devicePixelRatio || 1;
     const bounds = canvas.getBoundingClientRect();
@@ -104,7 +110,7 @@ function initGlobe() {
       context.strokeStyle = color.replace("OPACITY", frontOpacity);
       context.lineWidth = 1.15;
       context.setLineDash([radius * .11, radius * .08]);
-      context.lineDashOffset = -phase * radius * .12;
+      context.lineDashOffset = 0;
       context.shadowColor = color.replace("OPACITY", frontOpacity);
       context.shadowBlur = 13;
       context.stroke();
@@ -177,7 +183,7 @@ function initGlobe() {
     lastFrame = timestamp;
     if (!dragging && !reducedMotion) {
       rotation += angularVelocity * elapsed;
-      electronPhase = (electronPhase + elapsed * .00065) % (Math.PI * 2);
+      electronPhase = (electronPhase + elapsed * getElectronSpeed()) % (Math.PI * 2);
       angularVelocity += (.008 - angularVelocity) * Math.min(1, elapsed / 1200);
       draw();
     }
@@ -197,6 +203,7 @@ function initGlobe() {
     rotation += horizontalDelta * .45;
     angularVelocity = Math.max(-.7, Math.min(.7, horizontalDelta * .45 / elapsed));
     tilt = Math.max(-55, Math.min(55, tilt - (event.clientY - previousPoint.clientY) * .3));
+    electronPhase = (electronPhase + elapsed * getElectronSpeed()) % (Math.PI * 2);
     previousPoint = event;
     draw();
   });
