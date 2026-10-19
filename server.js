@@ -56,7 +56,7 @@ async function getHistoricalRates(base, quote, range) {
     const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=5m&range=5d`, {
       headers: { "User-Agent": "Mozilla/5.0 k4currency/1.0" }
     });
-    if (!response.ok) throw new Error("Intraday exchange rates are temporarily unavailable.");
+    if (!response.ok) return getCurrentRatePoint(base, quote);
     const data = await response.json();
     const result = data.chart?.result?.[0];
     const timestamps = result?.timestamp || [];
@@ -73,9 +73,17 @@ async function getHistoricalRates(base, quote, range) {
   else start.setTime(Date.UTC(1999, 0, 1));
   const formatDate = date => date.toISOString().slice(0, 10);
   const response = await fetch(`https://api.frankfurter.app/${formatDate(start)}..${formatDate(end)}?from=${encodeURIComponent(base)}&to=${encodeURIComponent(quote)}`);
-  if (!response.ok) throw new Error("Historical exchange rates are temporarily unavailable.");
+  if (!response.ok) return getCurrentRatePoint(base, quote);
   const data = await response.json();
-  return Object.entries(data.rates).map(([date, values]) => ({ date, rate: values[quote] })).filter(point => Number.isFinite(point.rate));
+  const points = Object.entries(data.rates).map(([date, values]) => ({ date, rate: values[quote] })).filter(point => Number.isFinite(point.rate));
+  return points.length ? points : getCurrentRatePoint(base, quote);
+}
+
+async function getCurrentRatePoint(base, quote) {
+  const liveRates = await getLiveRates(base);
+  const rate = liveRates.rates[quote];
+  if (!Number.isFinite(rate)) throw new Error("No live rate is available for this currency pair.");
+  return [{ date: new Date().toISOString(), rate }];
 }
 
 function sendJson(res, status, body) {

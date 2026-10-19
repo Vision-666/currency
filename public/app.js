@@ -176,10 +176,7 @@ const countryCurrencies = {
   DE: "EUR", FR: "EUR", ES: "EUR", IT: "EUR"
 };
 let rates = {};
-let ratesUpdatedAt = "";
 let fallbackCurrencies = new Set();
-let rateProvider = "";
-let broaderUpdatedAt = "";
 let chartPoints = [];
 let selectedRange = "30d";
 let chartPoll;
@@ -413,9 +410,9 @@ async function loadChart(base, quote) {
   $("chartStatus").textContent = selectedRange === "6h" || selectedRange === "1d"
     ? `Live 5-minute rates · ${base}/${quote}`
     : `Live updates every minute · ${base}/${quote}`;
-  $("rateSource").textContent = fallbackCurrencies.has(quote)
-    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
-    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
+  if (result.points.length === 1 && fallbackCurrencies.has(quote)) {
+    $("chartStatus").textContent = `Current live rate shown; historical data is unavailable for ${base}/${quote}.`;
+  }
   renderChart();
 }
 
@@ -430,13 +427,6 @@ async function loadRates(base) {
   }
   rates = { [base]: 1, ...result.rates };
   fallbackCurrencies = new Set(result.fallbackCurrencies || []);
-  rateProvider = result.provider || "Live provider";
-  ratesUpdatedAt = result.updatedAt;
-  broaderUpdatedAt = result.broaderUpdatedAt || result.updatedAt;
-  const initialQuote = $("convertTo").value;
-  $("rateSource").textContent = fallbackCurrencies.has(initialQuote)
-    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
-    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
   updateConverter();
   const quote = $("convertTo").value;
   try {
