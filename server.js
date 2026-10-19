@@ -8,10 +8,46 @@ const publicDir = path.join(__dirname, "public");
 const transfers = [];
 
 async function getLiveRates(base) {
-  const response = await fetch(`https://api.frankfurter.app/latest?from=${encodeURIComponent(base)}`);
-  if (!response.ok) throw new Error("Live exchange rates are temporarily unavailable.");
-  const data = await response.json();
-  return { [base]: 1, ...data.rates };
+  let primaryRates = {};
+  let primaryUpdatedAt = "";
+  let primaryError;
+  try {
+    const response = await fetch(`https://api.frankfurter.app/latest?from=${encodeURIComponent(base)}`);
+    if (!response.ok) throw new Error(`Frankfurter returned HTTP ${response.status}.`);
+    const data = await response.json();
+    primaryRates = data.rates || {};
+    primaryUpdatedAt = data.date || "";
+  } catch (error) {
+    primaryError = error;
+  }
+
+  let broaderRates = {};
+  let broaderUpdatedAt = "";
+  let broaderError;
+  try {
+    const response = await fetch(`https://open.er-api.com/v6/latest/${encodeURIComponent(base)}`);
+    if (!response.ok) throw new Error(`ExchangeRate-API returned HTTP ${response.status}.`);
+    const data = await response.json();
+    if (data.result !== "success" || !data.rates) throw new Error("ExchangeRate-API returned an invalid response.");
+    broaderRates = data.rates;
+    broaderUpdatedAt = data.time_last_update_utc || "";
+  } catch (error) {
+    broaderError = error;
+  }
+
+  if (!Object.keys(primaryRates).length && !Object.keys(broaderRates).length) {
+    throw new Error(`Live exchange rates are temporarily unavailable. ${primaryError?.message || broaderError?.message || ""}`.trim());
+  }
+
+  const fallbackCurrencies = Object.keys(broaderRates).filter(code => !Object.prototype.hasOwnProperty.call(primaryRates, code));
+  return {
+    rates: { [base]: 1, ...broaderRates, ...primaryRates },
+    fallbackCurrencies,
+    provider: Object.keys(primaryRates).length ? "Frankfurter with ExchangeRate-API fallback" : "ExchangeRate-API",
+    updatedAt: primaryUpdatedAt || broaderUpdatedAt,
+    broaderUpdatedAt,
+    broaderUnavailable: Boolean(broaderError)
+  };
 }
 
 async function getHistoricalRates(base, quote, range) {
@@ -79,7 +115,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "GET" && url.pathname === "/api/rates") {
     const base = (url.searchParams.get("base") || "USD").toUpperCase();
     try {
-      return sendJson(res, 200, { base, rates: await getLiveRates(base), updatedAt: new Date().toISOString() });
+      return sendJson(res, 200, { base, ...await getLiveRates(base), fetchedAt: new Date().toISOString() });
     } catch (error) {
       return sendJson(res, 502, { error: error.message });
     }

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Currency Converter &amp; Exchanger: Home | k4currency</title>
-  <meta name="description" content="Use k4currency as a currency converter and exchanger to compare 30+ live currencies with current mid-market exchange rates for travel, shopping, and international payments.">
+  <meta name="description" content="Use k4currency to compare 160+ currency options with provider-labeled mid-market exchange rates for travel, shopping, and international payments.">
   <meta name="author" content="k4currency">
   <meta name="application-name" content="k4currency">
   <meta name="theme-color" content="#152923">
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://k4currency.com/">
   <meta property="og:title" content="Currency Converter &amp; Exchanger: Home | k4currency">
-  <meta property="og:description" content="Compare 30+ live currencies with k4currency's currency converter and exchanger before you travel, shop, or send an international payment.">
+  <meta property="og:description" content="Compare 160+ currency options with provider-labeled rates from primary and broader fallback sources before you travel, shop, or send an international payment.">
   <meta property="og:site_name" content="k4currency">
   <meta property="og:locale" content="en_US">
   <meta property="og:image" content="https://k4currency.com/og-image.svg">
@@ -21,7 +21,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:url" content="https://k4currency.com/">
   <meta name="twitter:title" content="Currency Converter &amp; Exchanger: Home | k4currency">
-  <meta name="twitter:description" content="Compare 30+ live currencies with a clear currency converter and exchanger using current mid-market rates.">
+  <meta name="twitter:description" content="Compare 160+ currency options with a clear converter using provider-labeled mid-market rates and update times.">
   <meta name="twitter:image" content="https://k4currency.com/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SDZGY0D27G"></script>
   <script>
@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=20261018-27">
+  <link rel="stylesheet" href="/styles.css?v=20261018-28">
 </head>
 <body class="currency-page">
   <header class="nav shell">
@@ -43,7 +43,7 @@
 
   <main class="shell">
     <section class="hero">
-      <div><p class="eyebrow">GLOBAL MONEY, MADE SIMPLE</p><h1>Free currency converter<br><em>with live exchange rates.</em></h1><p class="hero-copy">Choose from 30+ currencies with live mid-market rates. Every currency in the selector is supported by the live exchange-rate provider, so your conversion results stay clear and current.</p><div class="hero-actions"><button class="button support-button" id="supportUs" type="button">Support us <span>♥</span></button></div></div>
+      <div><p class="eyebrow">GLOBAL MONEY, MADE SIMPLE</p><h1>Free currency converter<br><em>with live exchange rates.</em></h1><p class="hero-copy">Choose from 160+ currency options with live mid-market rates. Rates show their provider and update time so you can compare them with confidence.</p><div class="hero-actions"><button class="button support-button" id="supportUs" type="button">Support us <span>♥</span></button></div></div>
       <div id="convert" class="card converter-card">
         <div class="card-top"><h3>Currency converter</h3><span class="live"><i></i> Live rates</span></div>
         <div class="money-row"><label for="convertAmount">You send<input id="convertAmount" type="number" value="1000" min="0" step="0.01"></label><select id="convertFrom" aria-label="Currency to convert from"></select></div>
@@ -64,17 +64,18 @@
           <div id="chartTooltip" class="chart-tooltip" role="status" hidden></div>
           <div id="chartDetails" class="chart-details"></div>
           <span id="chartStatus" class="chart-status">Loading live history…</span>
+          <span id="rateSource" class="chart-status"></span>
         </div>
       </div>
     </section>
 
-    <section class="stats" aria-label="Currency converter coverage"><div><strong>30+</strong><span>live currencies supported</span></div><div><strong>Live</strong><span>mid-market rates</span></div><div><strong>24/7</strong><span>rate availability</span></div></section>
+    <section class="stats" aria-label="Currency converter coverage"><div><strong>160+</strong><span>global currencies</span></div><div><strong>Live</strong><span>market rates</span></div><div><strong>Trusted</strong><span>source and update times</span></div></section>
 
     <section class="seo-content" aria-labelledby="help-heading">
       <div class="section-intro">
         <p class="eyebrow">QUICK ANSWERS</p>
         <h2 id="help-heading">Currency conversion,<br>made clear.</h2>
-        <p>Use k4currency to compare 30+ currencies with live mid-market rates from the current exchange-rate provider. Need to compare local times too? Try the <a href="/world-clock">Time Converter</a>, with 150+ locations across 140+ countries and territories.</p>
+        <p>Use k4currency to compare 160+ currency options with live mid-market rates. Each rate identifies its provider and update time. Need to compare local times too? Try the <a href="/world-clock">Time Converter</a>, with 150+ locations across 140+ countries and territories.</p>
       </div>
       <div class="faq-list">
         <details open>
@@ -87,7 +88,7 @@
         </details>
         <details>
           <summary>Which currencies can I convert?</summary>
-          <p>The converter lists 30+ currencies alphabetically by country or region. Every currency shown is supported by the current live exchange-rate provider.</p>
+          <p>The converter lists 160+ currency options alphabetically by country or region. Frankfurter supplies primary rates, while a broader fallback provider fills currencies it does not cover; the source and update time are shown with the current rate.</p>
         </details>
         <details>
           <summary>How often do exchange rates update?</summary>
@@ -134,7 +135,7 @@
         "@type": "WebApplication",
         "name": "k4currency",
         "url": "https://k4currency.com/",
-        "description": "Free currency converter with 30+ live currencies and current mid-market exchange rates.",
+        "description": "Free currency converter with 160+ currency options and provider-labeled mid-market exchange rates.",
         "inLanguage": "en-US",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
@@ -142,8 +143,8 @@
         "featureList": [
           "Live currency conversion",
           "Historical exchange-rate charts",
-          "30+ live currencies supported",
-          "Current mid-market exchange rates",
+          "160+ currency options",
+          "Provider-labeled mid-market exchange rates",
           "Historical exchange-rate charts"
         ],
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -158,7 +159,7 @@
         "@type": "WebPage",
         "name": "Currency Converter & Exchanger: Home",
         "url": "https://k4currency.com/",
-        "description": "Compare 30+ live currencies with a currency converter and exchanger using current mid-market exchange rates.",
+        "description": "Compare 160+ currency options with a currency converter and exchanger using provider-labeled mid-market exchange rates.",
         "inLanguage": "en-US",
         "dateModified": "2026-10-17",
         "isPartOf": { "@type": "WebSite", "url": "https://k4currency.com/" }
@@ -179,7 +180,7 @@
           {
             "@type": "Question",
             "name": "Which currencies can I convert?",
-            "acceptedAnswer": { "@type": "Answer", "text": "The converter lists 30+ currencies alphabetically by country or region, and every listed currency is supported by the current live exchange-rate provider." }
+            "acceptedAnswer": { "@type": "Answer", "text": "The converter lists 160+ currency options alphabetically by country or region. A broader fallback provider fills currencies not covered by the primary provider, and the current rate shows its source and update time." }
           },
           {
             "@type": "Question",
@@ -197,6 +198,6 @@
   }
   </script>
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="/app.js?v=20261018-27"></script>
+  <script src="/app.js?v=20261018-30"></script>
 </body>
 </html>

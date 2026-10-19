@@ -1,9 +1,3 @@
-const liveCurrencyCodes = new Set([
-  "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", "GBP",
-  "HKD", "HUF", "IDR", "ILS", "INR", "ISK", "JPY", "KRW", "MXN", "MYR",
-  "NOK", "NZD", "PHP", "PLN", "RON", "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
-]);
-
 const currencies = [
   { country: "Australia", code: "AUD" },
   { country: "Brazil", code: "BRL" },
@@ -174,8 +168,7 @@ const currencies = [
   ,{ country: "US dollar (next day)", code: "USN" }
   ,{ country: "ADB unit of account", code: "XUA" }
   ,{ country: "No currency", code: "XXX" }
-].filter(({ code }) => liveCurrencyCodes.has(code))
-  .filter((currency, index, list) => list.findIndex(item => item.code === currency.code) === index);
+].filter((currency, index, list) => list.findIndex(item => item.code === currency.code) === index);
 currencies.sort((a, b) => a.country.localeCompare(b.country));
 const countryCurrencies = {
   CA: "CAD", US: "USD", GB: "GBP", AU: "AUD",
@@ -184,6 +177,9 @@ const countryCurrencies = {
 };
 let rates = {};
 let ratesUpdatedAt = "";
+let fallbackCurrencies = new Set();
+let rateProvider = "";
+let broaderUpdatedAt = "";
 let chartPoints = [];
 let selectedRange = "30d";
 let chartPoll;
@@ -397,7 +393,12 @@ function renderChart() {
 async function loadChart(base, quote) {
   const response = await fetch(`/api/rates/history?base=${encodeURIComponent(base)}&quote=${encodeURIComponent(quote)}&range=${selectedRange}`);
   const result = await response.json();
-  if (!response.ok) throw new Error(result.error || "Live chart unavailable");
+  if (!response.ok) {
+    if (fallbackCurrencies.has(quote)) {
+      throw new Error("Historical chart unavailable for this fallback currency; the live conversion rate remains available.");
+    }
+    throw new Error(result.error || "Live chart unavailable");
+  }
   const liveRate = rates[quote];
   const now = new Date().toISOString();
   if (selectedRange === "6h" || selectedRange === "1d") {
@@ -412,6 +413,9 @@ async function loadChart(base, quote) {
   $("chartStatus").textContent = selectedRange === "6h" || selectedRange === "1d"
     ? `Live 5-minute rates · ${base}/${quote}`
     : `Live updates every minute · ${base}/${quote}`;
+  $("rateSource").textContent = fallbackCurrencies.has(quote)
+    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
+    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
   renderChart();
 }
 
@@ -425,7 +429,14 @@ async function loadRates(base) {
     throw new Error(result.error || "Live rates unavailable");
   }
   rates = { [base]: 1, ...result.rates };
+  fallbackCurrencies = new Set(result.fallbackCurrencies || []);
+  rateProvider = result.provider || "Live provider";
   ratesUpdatedAt = result.updatedAt;
+  broaderUpdatedAt = result.broaderUpdatedAt || result.updatedAt;
+  const initialQuote = $("convertTo").value;
+  $("rateSource").textContent = fallbackCurrencies.has(initialQuote)
+    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
+    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
   updateConverter();
   const quote = $("convertTo").value;
   try {
