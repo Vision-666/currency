@@ -42,6 +42,25 @@ function initGlobe() {
   const drawPolygon = (coordinates, centerX, centerY, radius, fill) => {
     coordinates.forEach(ring => {
       let segment = [];
+      const addPoint = point => {
+        if (!segment.length || Math.hypot(point.x - segment[segment.length - 1].x, point.y - segment[segment.length - 1].y) > .25) {
+          segment.push(point);
+        }
+      };
+      const horizonPoint = (start, end) => {
+        let low = 0;
+        let high = 1;
+        for (let step = 0; step < 8; step += 1) {
+          const middle = (low + high) / 2;
+          const longitude = start[0] + (end[0] - start[0]) * middle;
+          const latitude = start[1] + (end[1] - start[1]) * middle;
+          if (project(longitude, latitude, centerX, centerY, radius).visible === project(start[0], start[1], centerX, centerY, radius).visible) low = middle;
+          else high = middle;
+        }
+        const longitude = start[0] + (end[0] - start[0]) * ((low + high) / 2);
+        const latitude = start[1] + (end[1] - start[1]) * ((low + high) / 2);
+        return project(longitude, latitude, centerX, centerY, radius);
+      };
       const paintSegment = () => {
         if (segment.length < 3) {
           segment = [];
@@ -53,16 +72,22 @@ function initGlobe() {
         context.closePath();
         context.fillStyle = fill;
         context.fill();
-        context.strokeStyle = "rgba(197, 247, 216, .32)";
-        context.lineWidth = .65;
+        context.strokeStyle = "rgba(220, 250, 231, .48)";
+        context.lineWidth = .55;
         context.stroke();
         segment = [];
       };
-      ring.forEach(([longitude, latitude]) => {
-        const point = project(longitude, latitude, centerX, centerY, radius);
-        if (point.visible) {
-          segment.push(point);
-        } else {
+      ring.forEach((coordinate, index) => {
+        const previous = ring[index === 0 ? ring.length - 1 : index - 1];
+        const previousPoint = project(previous[0], previous[1], centerX, centerY, radius);
+        const point = project(coordinate[0], coordinate[1], centerX, centerY, radius);
+        if (point.visible && previousPoint.visible) {
+          addPoint(point);
+        } else if (point.visible !== previousPoint.visible) {
+          addPoint(horizonPoint(previous, coordinate));
+          if (point.visible) addPoint(point);
+          else paintSegment();
+        } else if (!point.visible) {
           paintSegment();
         }
       });
@@ -77,19 +102,24 @@ function initGlobe() {
     const centerY = height * .48;
     const radius = Math.min(width * .37, height * .43) * zoom;
     const glow = context.createRadialGradient(centerX - radius * .35, centerY - radius * .45, radius * .05, centerX, centerY, radius * 1.25);
-    glow.addColorStop(0, "#8290ff");
-    glow.addColorStop(.6, "#5968dc");
-    glow.addColorStop(1, "#26317e");
+    glow.addColorStop(0, "#7a9fc1");
+    glow.addColorStop(.55, "#326181");
+    glow.addColorStop(1, "#102b46");
+    context.save();
+    context.shadowColor = "rgba(4, 15, 26, .45)";
+    context.shadowBlur = 22;
+    context.shadowOffsetY = 10;
     context.beginPath();
     context.arc(centerX, centerY, radius, 0, Math.PI * 2);
     context.fillStyle = glow;
     context.fill();
+    context.restore();
     context.save();
     context.beginPath();
     context.arc(centerX, centerY, radius, 0, Math.PI * 2);
     context.clip();
-    context.strokeStyle = "rgba(197, 247, 216, .22)";
-    context.lineWidth = .7;
+    context.strokeStyle = "rgba(190, 225, 238, .2)";
+    context.lineWidth = .6;
     for (let longitude = -150; longitude <= 180; longitude += 30) {
       context.beginPath();
       let started = false;
@@ -118,13 +148,13 @@ function initGlobe() {
     }
     features.forEach(feature => {
       const geometries = feature.geometry.type === "Polygon" ? [feature.geometry.coordinates] : feature.geometry.coordinates;
-      geometries.forEach(polygon => drawPolygon(polygon, centerX, centerY, radius, "#c5f7d8"));
+      geometries.forEach(polygon => drawPolygon(polygon, centerX, centerY, radius, "#a7d7bf"));
     });
     context.restore();
     context.beginPath();
     context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    context.strokeStyle = "rgba(197, 247, 216, .7)";
-    context.lineWidth = 1.2;
+    context.strokeStyle = "rgba(201, 236, 246, .78)";
+    context.lineWidth = 1.3;
     context.stroke();
   };
   const animate = timestamp => {
