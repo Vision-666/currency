@@ -414,12 +414,12 @@ async function loadChart(base, quote) {
 }
 
 async function loadRates(base) {
-  rates = {};
-  updateConverter();
-  const response = await fetch(`/api/rates?base=${encodeURIComponent(base)}`);
+  const response = await fetch(`/api/rates?base=${encodeURIComponent(base)}`, { cache: "no-store" });
   const result = await response.json();
   if (!response.ok) {
-    $("chartStatus").textContent = result.error || "Live rates unavailable for this base currency.";
+    const message = result.error || "Live rates unavailable for this base currency.";
+    const chartStatus = $("chartStatus");
+    if (chartStatus) chartStatus.textContent = message;
     throw new Error(result.error || "Live rates unavailable");
   }
   rates = { [base]: 1, ...result.rates };
