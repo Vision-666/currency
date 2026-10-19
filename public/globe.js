@@ -202,7 +202,7 @@ function initGlobe() {
     const horizontalDelta = event.clientX - previousPoint.clientX;
     rotation += horizontalDelta * .45;
     angularVelocity = Math.max(-.7, Math.min(.7, horizontalDelta * .45 / elapsed));
-    tilt = Math.max(-55, Math.min(55, tilt - (event.clientY - previousPoint.clientY) * .3));
+    tilt = Math.max(-55, Math.min(55, tilt + (event.clientY - previousPoint.clientY) * .3));
     electronPhase = (electronPhase + elapsed * getElectronSpeed()) % (Math.PI * 2);
     previousPoint = event;
     draw();
