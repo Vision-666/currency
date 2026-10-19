@@ -176,7 +176,10 @@ const countryCurrencies = {
   DE: "EUR", FR: "EUR", ES: "EUR", IT: "EUR"
 };
 let rates = {};
+let ratesUpdatedAt = "";
 let fallbackCurrencies = new Set();
+let rateProvider = "";
+let broaderUpdatedAt = "";
 let chartPoints = [];
 let selectedRange = "30d";
 let chartPoll;
@@ -303,7 +306,7 @@ function updateConverter() {
   if (!supported) {
     chartPoints = [];
     $("rateChart").innerHTML = "";
-    $("chartStatus").textContent = "Live rate unavailable for this currency pair.";
+    $("chartStatus").textContent = "Live provider coverage is unavailable for this currency pair.";
   }
   renderChart();
   track("converter_updated", { from_currency: from, to_currency: to });
@@ -392,7 +395,7 @@ async function loadChart(base, quote) {
   const result = await response.json();
   if (!response.ok) {
     if (fallbackCurrencies.has(quote)) {
-      throw new Error("Historical chart unavailable for this currency; the live conversion rate remains available.");
+      throw new Error("Historical chart unavailable for this fallback currency; the live conversion rate remains available.");
     }
     throw new Error(result.error || "Live chart unavailable");
   }
@@ -410,20 +413,30 @@ async function loadChart(base, quote) {
   $("chartStatus").textContent = selectedRange === "6h" || selectedRange === "1d"
     ? `Live 5-minute rates · ${base}/${quote}`
     : `Live updates every minute · ${base}/${quote}`;
+  $("rateSource").textContent = fallbackCurrencies.has(quote)
+    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
+    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
   renderChart();
 }
 
 async function loadRates(base) {
-  const response = await fetch(`/api/rates?base=${encodeURIComponent(base)}`, { cache: "no-store" });
+  rates = {};
+  updateConverter();
+  const response = await fetch(`/api/rates?base=${encodeURIComponent(base)}`);
   const result = await response.json();
   if (!response.ok) {
-    const message = result.error || "Live rates unavailable for this base currency.";
-    const chartStatus = $("chartStatus");
-    if (chartStatus) chartStatus.textContent = message;
+    $("chartStatus").textContent = result.error || "Live rates unavailable for this base currency.";
     throw new Error(result.error || "Live rates unavailable");
   }
   rates = { [base]: 1, ...result.rates };
   fallbackCurrencies = new Set(result.fallbackCurrencies || []);
+  rateProvider = result.provider || "Live provider";
+  ratesUpdatedAt = result.updatedAt;
+  broaderUpdatedAt = result.broaderUpdatedAt || result.updatedAt;
+  const initialQuote = $("convertTo").value;
+  $("rateSource").textContent = fallbackCurrencies.has(initialQuote)
+    ? `Rate source: broader provider fallback · updated ${broaderUpdatedAt}`
+    : `Rate source: ${rateProvider} · updated ${ratesUpdatedAt}`;
   updateConverter();
   const quote = $("convertTo").value;
   try {
